@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
@@ -151,490 +151,879 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-高效并发（五）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 itemprop="name">
+      <a class="article-title" href="/wust_djc.github.io/2017/03/12/高效并发（五）/">高效并发（五）</a>
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2017/03/12/高效并发（五）/" class="archive-article-date">
+  	<time datetime="2017-03-12T03:32:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-12</time>
+</a>
+        
+      </header>
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;上篇已经分析了线程池和同步工具。这里我们来介绍原子类和forkjoin框架。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/12/高效并发（五）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">concurrent包总结</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/高效并发//" class="article-tag-list-link color5">高效并发</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/12/高效并发（五）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-高效并发（四）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/03/10/高效并发（四）/">高效并发（四）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
+        
+        <a href="/wust_djc.github.io/2017/03/10/高效并发（四）/" class="archive-article-date">
+  	<time datetime="2017-03-10T07:01:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;上篇已经分析了lock和concurrent提供的集合类包括阻塞队列和容器类。这里我们来介绍</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/10/高效并发（四）/#more">more >></a>
+        
+      
 
-        <div class="article-info info-on-right">
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">concurrent包总结</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
+        			<a href="/wust_djc.github.io/categories/高效并发//" class="article-tag-list-link color5">高效并发</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/10/高效并发（四）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-高效并发（三）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/03/06/高效并发（三）/">高效并发（三）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/03/06/高效并发（三）/" class="archive-article-date">
+  	<time datetime="2017-03-06T03:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;在前面的基础知识之上，我们开始对concurrent包的全面分析。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/06/高效并发（三）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">concurrent包总结</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
+        			<a href="/wust_djc.github.io/categories/高效并发//" class="article-tag-list-link color5">高效并发</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/06/高效并发（三）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-高效并发（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/03/03/高效并发（二）/">高效并发（二）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/03/03/高效并发（二）/" class="archive-article-date">
+  	<time datetime="2017-03-03T07:31:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　在学习完虚拟机之后，我们了解了java的内存模型、实现线程安全的方法和jvm的一些锁优化机制，我们现在就把方向在往线程的基本操作，到concurrent包里面的线程安全类、原子类和一些lock的实现类。了解整个java并发基础。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/03/高效并发（二）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">并发基础知识</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
+        			<a href="/wust_djc.github.io/categories/高效并发//" class="article-tag-list-link color5">高效并发</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/03/高效并发（二）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-算法：替换空格" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/03/03/算法：替换空格/">剑指offer：替换空格</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/03/03/算法：替换空格/" class="archive-article-date">
+  	<time datetime="2017-03-03T07:23:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="替换空格"><a href="#替换空格" class="headerlink" title="替换空格"></a>替换空格</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>&#160; &#160; &#160; &#160;请实现一个函数，将一个字符串中的空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/03/算法：替换空格/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
+        			<a href="/wust_djc.github.io/categories/剑指offer详解//" class="article-tag-list-link color5">剑指offer详解</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/03/算法：替换空格/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-高效并发（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/03/02/高效并发（一）/">高效并发（一）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/03/02/高效并发（一）/" class="archive-article-date">
+  	<time datetime="2017-03-02T08:33:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;并发处理的广泛应用是使得Amdahl定律代替摩尔定律称为计算机性能发展源动力的根本原因，也是人类压榨计算机能力最有力的武器。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/02/高效并发（一）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Java内存模型</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
+        			<a href="/wust_djc.github.io/categories/高效并发//" class="article-tag-list-link color5">高效并发</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/03/02/高效并发（一）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MySQL学习笔记整理（五）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/02/18/MySQL学习笔记整理（五）/">MySQL学习笔记整理（五）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/02/18/MySQL学习笔记整理（五）/" class="archive-article-date">
+  	<time datetime="2017-02-18T01:23:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;这篇我们从sql语句优化开始分析，这个时最基础的，可能我们在使用过程中都没有注意，也没有相关经验，但是有了这个意识，我们需要看别人总结的经验，自己去记忆和动手试下实例，加深理解。然后从mysql引擎的选择等方面进行分析，更恰当的去使用mysql。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/18/MySQL学习笔记整理（五）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql优化</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
+        			<a href="/wust_djc.github.io/categories/mysql学习//" class="article-tag-list-link color3">mysql学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/18/MySQL学习笔记整理（五）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MySQL学习笔记整理（四）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/02/16/MySQL学习笔记整理（四）/">MySQL学习笔记整理（四）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/02/16/MySQL学习笔记整理（四）/" class="archive-article-date">
+  	<time datetime="2017-02-16T04:12:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;上篇已经讲了怎么去建立索引，对索引的基本操作，这篇讲如果去适当的使用索引。我们先了解索引的优缺点，然后在这个基础上分析使用索引的恰当时机。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/16/MySQL学习笔记整理（四）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql优化</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
+        			<a href="/wust_djc.github.io/categories/mysql学习//" class="article-tag-list-link color3">mysql学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/16/MySQL学习笔记整理（四）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MySQL学习笔记整理（三）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
+      <a class="article-title" href="/wust_djc.github.io/2017/02/15/MySQL学习笔记整理（三）/">MySQL学习笔记整理（三）</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/wust_djc.github.io/2017/02/15/MySQL学习笔记整理（三）/" class="archive-article-date">
+  	<time datetime="2017-02-15T05:02:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;上篇已经建立了测试数据库，然后通过相关工具找到了慢查询的语句，这些就是我们优化的对象，本篇就从索引的角度去改善我们的数据库性能。共四种索引，主键索引、唯一索引、普通索引、全文索引。索引是有消耗的，占空间的，MYI格式文件在data文件夹下。<br>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/15/MySQL学习笔记整理（三）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql优化</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
+        			<a href="/wust_djc.github.io/categories/mysql学习//" class="article-tag-list-link color3">mysql学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/15/MySQL学习笔记整理（三）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
+    <article id="post-MySQL学习笔记整理（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-    </div></section>
+    <h1 itemprop="name">
+      <a class="article-title" href="/wust_djc.github.io/2017/02/14/MySQL学习笔记整理（二）/">MySQL学习笔记整理（二）</a>
+    </h1>
   
 
+        
+        <a href="/wust_djc.github.io/2017/02/14/MySQL学习笔记整理（二）/" class="archive-article-date">
+  	<time datetime="2017-02-14T02:08:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-14</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;之前已经了解过mysql的基本原理，重点是我们该从哪些方面去改善数据库性能，或者从设计开始怎么样去合适的设计，可以使用哪些工具和方法去帮助我们监测数据库，并根据在数据库原理的理解基础上，对不同的业务需求不同的软硬件环境，尽量做出最优的优化策略。下面就看下有哪些优化方法和适用场景，可以根据实际选用其中一部分进行优化，而且优化是一个整体的，所以不是改变一个方法就能大幅提升性能，也没有确定的套路。本文在看了传智mysql优化课程之后记录的学习笔记。</p>
+        
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/14/MySQL学习笔记整理（二）/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql优化</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/wust_djc.github.io/categories/mysql学习//" class="article-tag-list-link color3">mysql学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/wust_djc.github.io/2017/02/14/MySQL学习笔记整理（二）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/wust_djc.github.io/">&laquo; Prev</a><a class="page-number" href="/wust_djc.github.io/">1</a><span class="page-number current">2</span><a class="page-number" href="/wust_djc.github.io/page/3/">3</a><a class="page-number" href="/wust_djc.github.io/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -658,9 +1047,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
+		isHome: true,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

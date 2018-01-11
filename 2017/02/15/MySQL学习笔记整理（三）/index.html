@@ -6,14 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>MySQL学习笔记整理（三） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;上篇已经建立了测试数据库，然后通过相关工具找到了慢查询的语句，这些就是我们优化的对象，本篇就从索引的角度去改善我们的数据库性能。共四种索引，主键索引、唯一索引、普通索引、全文索引。索引是有消耗的，占空间的，MYI格式文件在data文件夹下。">
+<meta name="keywords" content="mysql优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL学习笔记整理（三）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2017/02/15/MySQL学习笔记整理（三）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;上篇已经建立了测试数据库，然后通过相关工具找到了慢查询的语句，这些就是我们优化的对象，本篇就从索引的角度去改善我们的数据库性能。共四种索引，主键索引、唯一索引、普通索引、全文索引。索引是有消耗的，占空间的，MYI格式文件在data文件夹下。">
+<meta property="og:image" content="http://opb7t58xj.bkt.clouddn.com/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86.png">
+<meta property="og:updated_time" content="2017-07-15T03:55:10.046Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="MySQL学习笔记整理（三）">
+<meta name="twitter:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;上篇已经建立了测试数据库，然后通过相关工具找到了慢查询的语句，这些就是我们优化的对象，本篇就从索引的角度去改善我们的数据库性能。共四种索引，主键索引、唯一索引、普通索引、全文索引。索引是有消耗的，占空间的，MYI格式文件在data文件夹下。">
+<meta name="twitter:image" content="http://opb7t58xj.bkt.clouddn.com/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +156,292 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-MySQL学习笔记整理（三）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MySQL学习笔记整理（三）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2017/02/15/MySQL学习笔记整理（三）/" class="archive-article-date">
+  	<time datetime="2017-02-15T05:02:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-15</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;上篇已经建立了测试数据库，然后通过相关工具找到了慢查询的语句，这些就是我们优化的对象，本篇就从索引的角度去改善我们的数据库性能。共四种索引，主键索引、唯一索引、普通索引、全文索引。索引是有消耗的，占空间的，MYI格式文件在data文件夹下。<br>  <a id="more"></a></p>
+<p>&#160; &#160; &#160; &#160;<font color="red">索引能使查询变快的原理</font>：先建了一个索引文件，就是MYI文件，然后建立查找二叉树（也叫B树，二叉搜索树，二叉排序树）。利用了二叉树算法，使搜索性能逼近二分查找，但是他比连续内存空间的二分查找优点是，插入和删除不需要移动大量数据，通常是常数开销。记录下了对应索引数值的物理位置，所以数据库换了路径，索引也失效了。</p>
+<p>&#160; &#160; &#160; &#160;学会用并利用explain来分析语句。</p>
+<p><img src="http://opb7t58xj.bkt.clouddn.com/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86.png" alt=""></p>
+<h2 id="建立适当的索引"><a href="#建立适当的索引" class="headerlink" title="建立适当的索引"></a>建立适当的索引</h2><h3 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h3><p>&#160; &#160; &#160; &#160;当一张表，把某个列设为主键的时候，则该列就是主键索引。主键不能为null且不允许重复。</p>
+<pre><code>create table aaa
+(id int unsigned primary key auto_increment ,
+name varchar(32) not null defaul ‘’);
+</code></pre><h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><p>&#160; &#160; &#160; &#160;这是id 列就是主键索引。</p>
+<p>&#160; &#160; &#160; &#160;如果你创建表时，没有指定主键索引，也可以在创建表后，在添加指令:</p>
+<pre><code>alter table 表名 add primary key (列名);
+</code></pre><h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><p>&#160; &#160; &#160; &#160;举例:</p>
+<pre><code>create table bbb (id int , name varchar(32) not null default ‘’);
+
+alter table bbb add primary key (id);
+</code></pre><h4 id="3"><a href="#3" class="headerlink" title="3"></a>3</h4><p>&#160; &#160; &#160; &#160;添加之后发现库文件MYI文件变大。我们在我们测试样本的emp库建立主键索引，且前后查询对比如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; select * from emp where empno=3456789;</span><br><span class="line">+---------+--------+----------+-----+------------+---------+--------+--------+</span><br><span class="line">| empno   | ename  | job      | mgr | hiredate   | sal     | comm   | deptno |</span><br><span class="line">+---------+--------+----------+-----+------------+---------+--------+--------+</span><br><span class="line">| 3456789 | mFmwwU | SALESMAN |   1 | 2017-05-05 | 2000.00 | 400.00 |     82 |</span><br><span class="line">+---------+--------+----------+-----+------------+---------+--------+--------+</span><br><span class="line">1 row in set (0.85 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table emp add primary key(empno);</span><br><span class="line">Query OK, 4000000 rows affected (9.47 sec)</span><br><span class="line">Records: 4000000  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp where empno=3456789;</span><br><span class="line">+---------+--------+----------+-----+------------+---------+--------+--------+</span><br><span class="line">| empno   | ename  | job      | mgr | hiredate   | sal     | comm   | deptno |</span><br><span class="line">+---------+--------+----------+-----+------------+---------+--------+--------+</span><br><span class="line">| 3456789 | mFmwwU | SALESMAN |   1 | 2017-05-05 | 2000.00 | 400.00 |     82 |</span><br><span class="line">+---------+--------+----------+-----+------------+---------+--------+--------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;发现时间明显变少，这就是主键索引的作用，按主键单位时间定为到准确位置，而不是从头开始找。</p>
+<h3 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h3><p>&#160; &#160; &#160; &#160;一般来说，普通索引的创建，是先创建表，然后在创建普通索引。</p>
+<p>&#160; &#160; &#160; &#160;比如:</p>
+<pre><code>//先建表
+create table ccc(
+id int unsigned,
+name varchar(32)
+)
+//添加索引
+create index 索引名 on 表 (列1,列名2);
+</code></pre><h3 id="创建全文索引"><a href="#创建全文索引" class="headerlink" title="创建全文索引"></a>创建全文索引</h3><p>&#160; &#160; &#160; &#160;全文索引，主要是在很针对文件、文本的检索、比如文章，全文索引仅针对MyISAM有用。我们在测试样本temp库中创建下表，并插入测试数据如下：</p>
+<h4 id="1-1"><a href="#1-1" class="headerlink" title="1"></a>1</h4><pre><code>mysql&gt; CREATE TABLE articles (
+    -&gt;        id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    -&gt;        title VARCHAR(200),
+    -&gt;        body TEXT,
+    -&gt;        FULLTEXT (title,body)
+    -&gt;      )engine=myisam charset utf8;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql&gt; INSERT INTO articles (title,body) VALUES
+    -&gt;      (&apos;MySQL Tutorial&apos;,&apos;DBMS stands for DataBase ...&apos;),
+    -&gt;      (&apos;How To Use MySQL Well&apos;,&apos;After you went through a ...&apos;),
+    -&gt;      (&apos;Optimizing MySQL&apos;,&apos;In this tutorial we will show ...&apos;),
+        -&gt;      (&apos;1001 MySQL Tricks&apos;,&apos;1. Never run mysqld as root. 2. ...&apos;),
+    -&gt;      (&apos;MySQL vs. YourSQL&apos;,&apos;In the following database comparison ...&apos;),
+    -&gt;      (&apos;MySQL Security&apos;,&apos;When configured properly, MySQL ...&apos;);
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+</code></pre><h4 id="2-1"><a href="#2-1" class="headerlink" title="2"></a>2</h4><p>然后使用下面命令看是否成功,其中\G代表按行打印：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; show index from articles\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 0</span><br><span class="line">     Key_name: PRIMARY</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: id</span><br><span class="line">    Collation: A</span><br><span class="line">  Cardinality: 6</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: </span><br><span class="line">   Index_type: BTREE</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: title</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: title</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: FULLTEXT</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 3. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: title</span><br><span class="line"> Seq_in_index: 2</span><br><span class="line">  Column_name: body</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: FULLTEXT</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h4 id="3-1"><a href="#3-1" class="headerlink" title="3"></a>3</h4><p>&#160; &#160; &#160; &#160;使用explain来分析一个错误使用全文索引的语句。</p>
+<pre><code>mysql&gt; explain select * from articles where body like &quot;%mysql%&quot;\G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: articles
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+      key: NULL
+  key_len: NULL
+      ref: NULL
+     rows: 6
+ filtered: 16.67
+    Extra: Using where
+1 row in set, 1 warning (0.00 sec)
+</code></pre><p>可看到possible_keys: NULL，key: NULL，说明没用到，下面例子就看到使用到了title。</p>
+<h4 id="4"><a href="#4" class="headerlink" title="4"></a>4</h4><font color="red">正确的用法：WHERE  MATCH(title,body) against(‘database’);</font>
+
+
+<pre><code>mysql&gt; explain select * from articles where match(title,body)     against(&apos;database&apos;)\G; 
+*************************** 1. row ***************************
+       id: 1
+  select_type: SIMPLE
+        table: articles
+   partitions: NULL
+     type: fulltext
+possible_keys: title
+          key: title
+      key_len: 0
+          ref: const
+         rows: 1
+     filtered: 100.00
+        Extra: Using where
+1 row in set, 1 warning (0.00 sec)
+</code></pre><p>&#160; &#160; &#160; &#160;说明：</p>
+<ol>
+<li>在mysql中fulltext 索引只针对 myisam生效</li>
+<li>mysql自己提供的fulltext针对英文生效-&gt;sphinx (coreseek) 技术处理中文</li>
+<li>使用方法是 match(字段名..) against(‘关键字’)</li>
+<li>全文索引一个 叫 停止词,  因为在一个文本中，创建索引是一个无穷大的数，因此，对一些常用词和字符，就不会创建，这些词，称为停止词.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; select match(title,body) against(&apos;a&apos;) from articles;</span><br><span class="line">+--------------------------------+</span><br><span class="line">| match(title,body) against(&apos;a&apos;) |</span><br><span class="line">+--------------------------------+</span><br><span class="line">|                              0 |</span><br><span class="line">|                              0 |</span><br><span class="line">|                              0 |</span><br><span class="line">|                              0 |</span><br><span class="line">|                              0 |</span><br><span class="line">|                              0 |</span><br><span class="line">+--------------------------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h3 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h3><p>&#160; &#160; &#160; &#160;当表的某列被指定为unique约束时，这列就是一个唯一索引。按照以下方式建表，name列就是唯一索引。<font color="red">唯一索引允许为空，而且允许多个。</font></p>
+<h4 id="1-2"><a href="#1-2" class="headerlink" title="1"></a>1</h4><pre><code>mysql&gt; create table ddd(id int primary key auto_increment , name varchar(32)     unique);
+Query OK, 0 rows affected (0.02 sec)
+</code></pre><h4 id="2-2"><a href="#2-2" class="headerlink" title="2"></a>2</h4><p>&#160; &#160; &#160; &#160;在创建表后，再去创建唯一索引，见如下指令：</p>
+<pre><code>create table eee(id int primary key auto_increment, name varchar(32));
+
+create unique index 索引名  on 表名 (列表..);
+</code></pre><h2 id="查询索引"><a href="#查询索引" class="headerlink" title="查询索引"></a>查询索引</h2><p>desc 表名 【该方法的缺点是：　不能够显示索引名.】</p>
+<p>show index(es) from 表名</p>
+<p>show keys from 表名</p>
+<h4 id="1-3"><a href="#1-3" class="headerlink" title="1"></a>1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; desc articles</span><br><span class="line">    -&gt; ;</span><br><span class="line">+-------+------------------+------+-----+---------+----------------+</span><br><span class="line">| Field | Type             | Null | Key | Default | Extra          |</span><br><span class="line">+-------+------------------+------+-----+---------+----------------+</span><br><span class="line">| id    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| title | varchar(200)     | YES  | MUL | NULL    |                |</span><br><span class="line">| body  | text             | YES  |     | NULL    |                |</span><br><span class="line">+-------+------------------+------+-----+---------+----------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; show index from articles\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 0</span><br><span class="line">     Key_name: PRIMARY</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: id</span><br><span class="line">    Collation: A</span><br><span class="line">  Cardinality: 6</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: </span><br><span class="line">   Index_type: BTREE</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: title</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: title</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: FULLTEXT</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 3. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: title</span><br><span class="line"> Seq_in_index: 2</span><br><span class="line">  Column_name: body</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: FULLTEXT</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">ERROR: </span><br><span class="line">No query specified</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; show keys from articles\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 0</span><br><span class="line">     Key_name: PRIMARY</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: id</span><br><span class="line">    Collation: A</span><br><span class="line">  Cardinality: 6</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: </span><br><span class="line">   Index_type: BTREE</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: title</span><br><span class="line"> Seq_in_index: 1</span><br><span class="line">  Column_name: title</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: FULLTEXT</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">*************************** 3. row ***************************</span><br><span class="line">        Table: articles</span><br><span class="line">   Non_unique: 1</span><br><span class="line">     Key_name: title</span><br><span class="line"> Seq_in_index: 2</span><br><span class="line">  Column_name: body</span><br><span class="line">    Collation: NULL</span><br><span class="line">  Cardinality: NULL</span><br><span class="line">     Sub_part: NULL</span><br><span class="line">       Packed: NULL</span><br><span class="line">         Null: YES</span><br><span class="line">   Index_type: FULLTEXT</span><br><span class="line">      Comment: </span><br><span class="line">Index_comment: </span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><p>alter table 表名 drop index 索引名; </p>
+<p>如果删除主键索引。</p>
+<p>alter table 表名 drop primary key </p>
+<h2 id="修改索引"><a href="#修改索引" class="headerlink" title="修改索引"></a>修改索引</h2><p>先删除再重新创建。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本节介绍的如何操作索引和索引能加快查询的原理。下篇我们看看怎么去分析索引的性能，比如explain用法，然后我们该怎么去适用索引最恰当。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&#160; &#160; &#160; &#160;文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！！！</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql优化</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/mysql学习//" class="article-tag-list-link color3">mysql学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2017/02/15/MySQL学习笔记整理（三）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2017/02/16/MySQL学习笔记整理（四）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL学习笔记整理（四）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2017/02/14/MySQL学习笔记整理（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL学习笔记整理（二）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +465,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

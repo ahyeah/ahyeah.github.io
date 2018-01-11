@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>mybatis整理笔记（十四） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速度要快。">
+<meta name="keywords" content="延迟加载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis整理笔记（十四）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2016/11/09/mybatis整理笔记（十四）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速度要快。">
+<meta property="og:updated_time" content="2017-08-31T07:36:46.980Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="mybatis整理笔记（十四）">
+<meta name="twitter:description" content="前言延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速度要快。">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +154,286 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-mybatis整理笔记（十四）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mybatis整理笔记（十四）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2016/11/09/mybatis整理笔记（十四）/" class="archive-article-date">
+  	<time datetime="2016-11-09T07:16:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-09</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>延迟加载：先从单表查询、需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速度要快。<br><a id="more"></a></p>
+<p>需求：</p>
+<p>如果查询订单并且关联查询用户信息。如果先查询订单信息即可满足要求，当我们需要查询用户信息时再查询用户信息。把对用户信息的按需去查询就是延迟加载。</p>
+<h2 id="使用association实现延迟加载"><a href="#使用association实现延迟加载" class="headerlink" title="使用association实现延迟加载"></a>使用association实现延迟加载</h2><ul>
+<li>mapper.xml</li>
+</ul>
+<p>需要定义两个mapper的方法对应的statement。</p>
+<p>1.只查询订单信息</p>
+<p><code>SELECT * FROM orders</code></p>
+<p>在查询订单的statement中使用association去延迟加载（执行）下边的satatement(关联查询用户信息)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 查询订单关联查询用户，用户信息需要延迟加载 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findOrdersUserLazyLoading"</span> <span class="attr">resultMap</span>=<span class="string">"OrdersUserLazyLoadingResultMap"</span>&gt;</span></span><br><span class="line">    SELECT * FROM orders</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2.关联查询用户信息</p>
+<p>通过上边查询到的订单信息中user_id去关联查询用户信息,使用UserMapper.xml中的findUserById</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"com.iot.mybatis.po.User"</span>&gt;</span></span><br><span class="line">    SELECT * FROM  user  WHERE id=#&#123;value&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上边先去执行findOrdersUserLazyLoading，当需要去查询用户的时候再去执行findUserById，通过resultMap的定义将延迟加载执行配置起来。</p>
+<ul>
+<li>延迟加载resultMap</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 延迟加载的resultMap --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">type</span>=<span class="string">"com.iot.mybatis.po.Orders"</span> <span class="attr">id</span>=<span class="string">"OrdersUserLazyLoadingResultMap"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--对订单信息进行映射配置  --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"number"</span> <span class="attr">property</span>=<span class="string">"number"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"createtime"</span> <span class="attr">property</span>=<span class="string">"createtime"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"note"</span> <span class="attr">property</span>=<span class="string">"note"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 实现对用户信息进行延迟加载</span></span><br><span class="line"><span class="comment">    select：指定延迟加载需要执行的statement的id（是根据user_id查询用户信息的statement）</span></span><br><span class="line"><span class="comment">    要使用userMapper.xml中findUserById完成根据用户id(user_id)用户信息的查询，如果findUserById不在本mapper中需要前边加namespace</span></span><br><span class="line"><span class="comment">    column：订单信息中关联用户信息查询的列，是user_id</span></span><br><span class="line"><span class="comment">    关联查询的sql理解为：</span></span><br><span class="line"><span class="comment">    SELECT orders.*,</span></span><br><span class="line"><span class="comment">    (SELECT username FROM USER WHERE orders.user_id = user.id)username,</span></span><br><span class="line"><span class="comment">    (SELECT sex FROM USER WHERE orders.user_id = user.id)sex</span></span><br><span class="line"><span class="comment">     FROM orders</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"user"</span>  <span class="attr">javaType</span>=<span class="string">"com.iot.mybatis.po.User"</span></span></span><br><span class="line"><span class="tag">                 <span class="attr">select</span>=<span class="string">"com.iot.mybatis.mapper.UserMapper.findUserById"</span></span></span><br><span class="line"><span class="tag">                 <span class="attr">column</span>=<span class="string">"user_id"</span>&gt;</span></span><br><span class="line">     <span class="comment">&lt;!-- 实现对用户信息进行延迟加载 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">association</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>与非延迟加载的主要区别就在<code>association</code>标签属性多了<code>select</code>和<code>column</code></strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"user"</span>  <span class="attr">javaType</span>=<span class="string">"com.iot.mybatis.po.User"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">select</span>=<span class="string">"com.iot.mybatis.mapper.UserMapper.findUserById"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">column</span>=<span class="string">"user_id"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>mapper.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询订单关联查询用户，用户信息是延迟加载</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Orders&gt; <span class="title">findOrdersUserLazyLoading</span><span class="params">()</span><span class="keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>测试思路</p>
+<ul>
+<li>执行上边mapper方法(<code>findOrdersUserLazyLoading</code>)，内部去调用<code>com.iot.mybatis.mapper.OrdersMapperCustom</code>中的<code>findOrdersUserLazyLoading</code>只查询orders信息（单表）。<ul>
+<li>在程序中去遍历上一步骤查询出的List<orders>，当我们调用Orders中的getUser方法时，开始进行延迟加载。</orders></li>
+<li>延迟加载，去调用UserMapper.xml中findUserbyId这个方法获取用户信息。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>延迟加载配置</p>
+</li>
+</ul>
+<p>mybatis默认没有开启延迟加载，需要在SqlMapConfig.xml中setting配置。</p>
+<p>在mybatis核心配置文件中配置：lazyLoadingEnabled、aggressiveLazyLoading</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">设置项</th>
+<th style="text-align:left">描述</th>
+<th style="text-align:left">允许值</th>
+<th style="text-align:left">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">lazyLoadingEnabled</td>
+<td style="text-align:left">全局性设置懒加载。如果设为‘false’，则所有相关联的都会被初始化加载</td>
+<td style="text-align:left">true/false</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left">aggressiveLazyLoading</td>
+<td style="text-align:left">当设置为‘true’的时候，懒加载的对象可能被任何懒属性全部加载。否则，每个属性都按需加载。</td>
+<td style="text-align:left">true/false</td>
+<td style="text-align:left">true</td>
+</tr>
+</tbody>
+</table>
+<p>在SqlMapConfig.xml中配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 打开延迟加载 的开关 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"lazyLoadingEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 将积极加载改为消极加载即按需要加载 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">"aggressiveLazyLoading"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 开启二级缓存 --&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- &lt;setting name="cacheEnabled" value="true"/&gt;--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询订单关联查询用户，用户信息使用延迟加载</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindOrdersUserLazyLoading</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	SqlSession sqlSession = sqlSessionFactory.openSession();<span class="comment">// 创建代理对象</span></span><br><span class="line">	OrdersMapperCustom ordersMapperCustom = sqlSession</span><br><span class="line">			.getMapper(OrdersMapperCustom.class);</span><br><span class="line">	<span class="comment">// 查询订单信息（单表）</span></span><br><span class="line">	List&lt;Orders&gt; list = ordersMapperCustom.findOrdersUserLazyLoading();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 遍历上边的订单列表</span></span><br><span class="line">	<span class="keyword">for</span> (Orders orders : list) &#123;</span><br><span class="line">		<span class="comment">// 执行getUser()去查询用户信息，这里实现按需加载</span></span><br><span class="line">		User user = orders.getUser();</span><br><span class="line">		System.out.println(user);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="延迟加载思考"><a href="#延迟加载思考" class="headerlink" title="延迟加载思考"></a>延迟加载思考</h2><p>不使用mybatis提供的association及collection中的延迟加载功能，如何实现延迟加载？？</p>
+<p>实现方法如下：</p>
+<p>定义两个mapper方法：</p>
+<ul>
+<li>查询订单列表</li>
+<li>根据用户id查询用户信息</li>
+</ul>
+<p>实现思路：</p>
+<p>先去查询第一个mapper方法，获取订单信息列表；在程序中（service），按需去调用第二个mapper方法去查询用户信息。</p>
+<p>总之，使用延迟加载方法，先去查询简单的sql（最好单表，也可以关联查询），再去按需要加载关联查询的其它信息。</p>
+<h2 id="IDEA的debug小现象"><a href="#IDEA的debug小现象" class="headerlink" title="IDEA的debug小现象"></a>IDEA的debug小现象</h2><p>使用的是intellij IDEA 15.0.2</p>
+<p>先说一下结果吧，IDEA在debug和run条件下，打印结果不同</p>
+<p>我为了验证延迟加载前的user是否为空，在Orders类中加入了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"----test-print-----"</span>+user+<span class="string">"   user==null: "</span>+(user==<span class="keyword">null</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询订单关联查询用户，用户信息使用延迟加载</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindOrdersUserLazyLoading</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	SqlSession sqlSession = sqlSessionFactory.openSession();<span class="comment">// 创建代理对象</span></span><br><span class="line">	OrdersMapperCustom ordersMapperCustom = sqlSession</span><br><span class="line">			.getMapper(OrdersMapperCustom.class);</span><br><span class="line">	<span class="comment">// 查询订单信息（单表）</span></span><br><span class="line">	List&lt;Orders&gt; list = ordersMapperCustom.findOrdersUserLazyLoading();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 遍历上边的订单列表</span></span><br><span class="line">	<span class="keyword">for</span> (Orders orders : list) &#123;</span><br><span class="line">		<span class="comment">// 执行getUser()去查询用户信息，这里实现按需加载</span></span><br><span class="line">		<span class="comment">//User user = orders.getUser();</span></span><br><span class="line">		<span class="comment">//System.out.println(user);</span></span><br><span class="line">		orders.print();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后分别run和debug</p>
+<ul>
+<li>run输出</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] - Opening JDBC Connection</span><br><span class="line">DEBUG [main] - Created connection 110771485.</span><br><span class="line">DEBUG [main] - Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@69a3d1d]</span><br><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM orders </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: </span><br><span class="line">DEBUG [main] - &lt;==      Total: 3</span><br><span class="line">----test-print-----null   user==null: true</span><br><span class="line">----test-print-----null   user==null: true</span><br><span class="line">----test-print-----null   user==null: true</span><br></pre></td></tr></table></figure>
+<ul>
+<li>debug输出</li>
+</ul>
+<p>在<code>List&lt;Orders&gt; list = ordersMapperCustom.findOrdersUserLazyLoading();</code>打断点，运行完这句,日志输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] - Opening JDBC Connection</span><br><span class="line">DEBUG [main] - Created connection 1219273867.</span><br><span class="line">DEBUG [main] - Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@48aca48b]</span><br><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM orders </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: </span><br><span class="line">DEBUG [main] - &lt;==      Total: 3</span><br></pre></td></tr></table></figure>
+<p>但是当你点开<code>list</code>属性时，控制台又输出了，而且可以看到list里的user是有内容的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM user WHERE id=? </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: 1(Integer)</span><br><span class="line">DEBUG [main] - &lt;==      Total: 1</span><br><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM user WHERE id=? </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: 10(Integer)</span><br><span class="line">DEBUG [main] - &lt;==      Total: 1</span><br></pre></td></tr></table></figure>
+<p>运行完所有程序，控制台输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] - Opening JDBC Connection</span><br><span class="line">DEBUG [main] - Created connection 1219273867.</span><br><span class="line">DEBUG [main] - Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@48aca48b]</span><br><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM orders </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: </span><br><span class="line">DEBUG [main] - &lt;==      Total: 3</span><br><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM user WHERE id=? </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: 1(Integer)</span><br><span class="line">DEBUG [main] - &lt;==      Total: 1</span><br><span class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM user WHERE id=? </span><br><span class="line">DEBUG [main] - ==&gt; Parameters: 10(Integer)</span><br><span class="line">DEBUG [main] - &lt;==      Total: 1</span><br><span class="line">----test-print-----User [id=1, username=王五, sex=2, birthday=null, address=null]   user==null: false</span><br><span class="line">----test-print-----User [id=1, username=王五, sex=2, birthday=null, address=null]   user==null: false</span><br><span class="line">----test-print-----User [id=10, username=张三, sex=1, birthday=Thu Jul 10 00:00:00 CST 2014, address=北京市]   user==null: false</span><br></pre></td></tr></table></figure>
+<p>所以，我觉得应该是在debug时，查看属性的话，IDEA会自动调用get相应的方法，从而触发user的查询。延迟加载的源码实现以后我会阅读，把这个问题弄清楚。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">延迟加载</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/mybatis//" class="article-tag-list-link color3">mybatis</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2016/11/09/mybatis整理笔记（十四）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2016/11/09/mybatis整理笔记（十五）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          mybatis整理笔记（十五）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2016/11/08/mybatis整理笔记（十三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mybatis整理笔记（十三）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +457,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

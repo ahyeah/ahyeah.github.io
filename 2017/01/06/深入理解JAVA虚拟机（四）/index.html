@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>深入理解Java虚拟机（四） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;以前计算机程序课上老师总说：计算机只认识0和1，写的程序都会编译成为0和1组成的二进制格式才能被计算机执行。然而10多年的时间过去了，今天的计算机仍然只能识别0和1，但是建立在虚拟机之上的大量程序语言发展迅速，将2我们编写的程序编译成二进制本地机器码（native code）已不再是唯一的选择，越来越多的程序语言选择了与操作系统和机器指令无">
+<meta name="keywords" content="文件结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java虚拟机（四）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2017/01/06/深入理解JAVA虚拟机（四）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;以前计算机程序课上老师总说：计算机只认识0和1，写的程序都会编译成为0和1组成的二进制格式才能被计算机执行。然而10多年的时间过去了，今天的计算机仍然只能识别0和1，但是建立在虚拟机之上的大量程序语言发展迅速，将2我们编写的程序编译成二进制本地机器码（native code）已不再是唯一的选择，越来越多的程序语言选择了与操作系统和机器指令无">
+<meta property="og:updated_time" content="2017-07-11T08:42:01.621Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="深入理解Java虚拟机（四）">
+<meta name="twitter:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;以前计算机程序课上老师总说：计算机只认识0和1，写的程序都会编译成为0和1组成的二进制格式才能被计算机执行。然而10多年的时间过去了，今天的计算机仍然只能识别0和1，但是建立在虚拟机之上的大量程序语言发展迅速，将2我们编写的程序编译成二进制本地机器码（native code）已不再是唯一的选择，越来越多的程序语言选择了与操作系统和机器指令无">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +154,202 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-深入理解JAVA虚拟机（四）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解Java虚拟机（四）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2017/01/06/深入理解JAVA虚拟机（四）/" class="archive-article-date">
+  	<time datetime="2017-01-06T14:23:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-06</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;以前计算机程序课上老师总说：计算机只认识0和1，写的程序都会编译成为0和1组成的二进制格式才能被计算机执行。然而10多年的时间过去了，今天的计算机仍然只能识别0和1，但是建立在虚拟机之上的大量程序语言发展迅速，将2我们编写的程序编译成二进制本地机器码（native code）已不再是唯一的选择，<font color="red">越来越多的程序语言选择了与操作系统和机器指令无关平台中立的格式作为程序编译之后的存储格式</font>。这也是Java这类语言，平台无关性的基石。而且虚拟机上更有语言无关性的趋势。</p>
+<a id="more"></a>
+<h2 id="Class类文件的结构"><a href="#Class类文件的结构" class="headerlink" title="Class类文件的结构"></a>Class类文件的结构</h2><p>&#160; &#160; &#160; &#160;Class文件是一组以8位字节为基础的二进制，各个数据项目严格按照顺序紧凑的排列Class文件之间，中间没有添加任何分隔符，这使得整个Class文件中存储的内容几乎全部都是程序运行的必要数据。</p>
+<p>&#160; &#160; &#160; &#160;虚拟机规范：Class文件格式采用一种类似于C语言结构体的伪结构来存储，这种伪结构中还有两种数据结构：无符号和表，后面的解析都要以这两种数据类型为基础。</p>
+<p>&#160; &#160; &#160; &#160;无符号数属于基本的数据类型，用u1,u2,u4,u8分别代表1个字节、2个字节、4个字节、8个字节的无符号数，可以用来描述数字、索引引用、数量值，或者按照UTF-8编码构成字符串值。</p>
+<p>&#160; &#160; &#160; &#160;表是由多个无符号数或其他数据项构成的复合结构数据，整个class文件本质上就是一张表。</p>
+<h3 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h3><p>&#160; &#160; &#160; &#160;每个class文件的头四个字节被称为魔数，它的唯一作用是确定这个文件是否为一个能被虚拟机接受的Class文件。很多图片格式在文件头都有魔数。Java中为：0XCAFFBABE；</p>
+<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><p>&#160; &#160; &#160; &#160;紧接着4个字节存储的是Class文件的版本号：5-6是次版本，7-8是主版本。</p>
+<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><p>&#160; &#160; &#160; &#160;主次版本号之后是常量池的入口，也是与其他项目关联最多的数据类型，也是占用class文件空间最大的项目之一，同时还是第一个出现的表类型。主要存放字面量和引用。</p>
+<h3 id="访问标志"><a href="#访问标志" class="headerlink" title="访问标志"></a>访问标志</h3><p>&#160; &#160; &#160; &#160;在常量池之后，紧接2个字节代表访问标志，包括是接口还是类，是否public，abstract，final等等。</p>
+<h3 id="类索引、父亲索引与接口索引集合"><a href="#类索引、父亲索引与接口索引集合" class="headerlink" title="类索引、父亲索引与接口索引集合"></a>类索引、父亲索引与接口索引集合</h3><p>&#160; &#160; &#160; &#160;类索引和父类索引都是一个u2类型的数据，而接口索引集合是一组u2类型的数据集合。类确定了这个类的全限定名，父亲索引确定这个父类的全限定名。不允许多继承，所以父类索引直邮一个。除了object都有父类。接口索引表示这个类实现了哪些接口。</p>
+<h3 id="字段表集合"><a href="#字段表集合" class="headerlink" title="字段表集合"></a>字段表集合</h3><p>&#160; &#160; &#160; &#160;字段表用于描述接口或类中声明的变量</p>
+<h3 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h3><p>&#160; &#160; &#160; &#160;访问标志、名称索引、描述符索引都表达清楚了，方法里面的代码经过编译器编译成字节码指令之后，存放在方法属性表集合中一个名为code的属性里面，属性表作为class文件格式最具扩展性的一种数据项目。</p>
+<h3 id="属性表集合"><a href="#属性表集合" class="headerlink" title="属性表集合"></a>属性表集合</h3><p>&#160; &#160; &#160; &#160;class文件、字段表、方法表都可以携带自己的属性表集合，以用于描述某些场景专有的信息。</p>
+<h2 id="class文件结构的发展"><a href="#class文件结构的发展" class="headerlink" title="class文件结构的发展"></a>class文件结构的发展</h2><p>&#160; &#160; &#160; &#160;上面这些属性大部分都用于支持Java中许多新出现的语言特性，如枚举、变长参数、泛型、动态注解。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>&#160; &#160; &#160; &#160;class文件是Java虚拟机执行引擎的数据入口，也是技术体系的基础支柱之一。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&#160; &#160; &#160; &#160;文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！！！</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">文件结构</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/Java虚拟机//" class="article-tag-list-link color3">Java虚拟机</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2017/01/06/深入理解JAVA虚拟机（四）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2017/01/07/深入理解JAVA虚拟机（五）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          深入理解Java虚拟机（五）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2017/01/05/深入理解JAVA虚拟机（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">深入理解Java虚拟机（三）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +373,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

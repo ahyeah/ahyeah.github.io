@@ -6,14 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>Java基础原理笔记（二） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="数据类型和运算符本章主要内容  基本类型的转换 直接量 运算符  基本类型的类型转换 Java语言所提供的7中数值类型之间可以相互转换，有两种转换方式： 自动类型转换、强制类型转换 自动类型转换 　　当把一个表数范围小的数值或变量直接赋给另一个表数范围大的变量时，西东可以自动类型转换，反之，则需要强制转换。">
+<meta name="keywords" content="数据类型转换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础原理笔记（二）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2016/09/11/Java基础原理笔记（二）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数据类型和运算符本章主要内容  基本类型的转换 直接量 运算符  基本类型的类型转换 Java语言所提供的7中数值类型之间可以相互转换，有两种转换方式： 自动类型转换、强制类型转换 自动类型转换 　　当把一个表数范围小的数值或变量直接赋给另一个表数范围大的变量时，西东可以自动类型转换，反之，则需要强制转换。">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/%E8%87%AA%E5%8A%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%9B%BE.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/int%E8%BD%ACbyte.png?imageView2/2/w/700/h/200/q/75|imageslim">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/%E4%B8%8E%E6%88%96%E8%BF%90%E7%AE%97.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/%E9%9D%9E%E8%B4%9F5.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/59%E5%BC%82%E6%88%96.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/%E5%B7%A6%E7%A7%BB%E8%BF%90%E7%AE%97.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/-5%E5%8F%B3%E7%A7%BB2%E4%BD%8D.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/-5%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB.png">
+<meta property="og:image" content="http://oppqlui3e.bkt.clouddn.com/%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7.png">
+<meta property="og:updated_time" content="2017-05-16T01:57:55.836Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="Java基础原理笔记（二）">
+<meta name="twitter:description" content="数据类型和运算符本章主要内容  基本类型的转换 直接量 运算符  基本类型的类型转换 Java语言所提供的7中数值类型之间可以相互转换，有两种转换方式： 自动类型转换、强制类型转换 自动类型转换 　　当把一个表数范围小的数值或变量直接赋给另一个表数范围大的变量时，西东可以自动类型转换，反之，则需要强制转换。">
+<meta name="twitter:image" content="http://oppqlui3e.bkt.clouddn.com/%E8%87%AA%E5%8A%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%9B%BE.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +164,352 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Java基础原理笔记（二）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java基础原理笔记（二）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2016/09/11/Java基础原理笔记（二）/" class="archive-article-date">
+  	<time datetime="2016-09-11T08:20:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-11</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="数据类型和运算符"><a href="#数据类型和运算符" class="headerlink" title="数据类型和运算符"></a>数据类型和运算符</h3><p><strong>本章主要内容</strong></p>
+<ul>
+<li>基本类型的转换</li>
+<li>直接量</li>
+<li>运算符</li>
+</ul>
+<h3 id="基本类型的类型转换"><a href="#基本类型的类型转换" class="headerlink" title="基本类型的类型转换"></a>基本类型的类型转换</h3><hr>
+<p>Java语言所提供的7中数值类型之间可以相互转换，有两种转换方式： <strong>自动类型转换、强制类型转换</strong></p>
+<h4 id="自动类型转换"><a href="#自动类型转换" class="headerlink" title="自动类型转换"></a>自动类型转换</h4><hr>
+<p>　　当把一个表数范围小的数值或变量直接赋给另一个表数范围大的变量时，西东可以自动类型转换，反之，则需要强制转换。</p>
+<p><img src="http://oppqlui3e.bkt.clouddn.com/%E8%87%AA%E5%8A%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt=""><br><a id="more"></a><br>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int a = 6;</span><br><span class="line">float b = a;//此时b的值为6.0</span><br><span class="line"></span><br><span class="line">byte c = 7;</span><br><span class="line">//下面代码将出错，byte类型不能自动转换成char类型</span><br><span class="line">char d = b;</span><br></pre></td></tr></table></figure>
+<p>　　特别地，当任何基本类型的值和字符串值进行连接运算时，基本类型的值会自动转换成字符串类型的值，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String TransToStr = 2.5f + &quot;&quot;;</span><br><span class="line"></span><br><span class="line">String Str1 = 3 + 4 + &quot;Hello!&quot;;//Str1的值为 &quot;7Hello!&quot;</span><br><span class="line"></span><br><span class="line">String Str2 = &quot;Hello!&quot; + 3 + 4;//Str2的值为 &quot;Hello34&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h4><hr>
+<p>　　强制类型转换的格式为(targetType)value，需要注意的是，若转换的值超过了目标类型的表数范围，将会引起溢出，造成数据丢失，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int iValue = 233;</span><br><span class="line">//将int型强制转换成byte型</span><br><span class="line">byte bValue = (byte)iValue;</span><br><span class="line">//数据溢出，将输出-23</span><br><span class="line">System.out.println(bValue);</span><br><span class="line"></span><br><span class="line">double dValue = 3.98;</span><br><span class="line">//将double型强制转换成int型</span><br><span class="line">int tol = (int)dValue;</span><br><span class="line">//将输出3</span><br><span class="line">System.out.println(tol);</span><br></pre></td></tr></table></figure>
+<p>原理：<br><img src="http://oppqlui3e.bkt.clouddn.com/int%E8%BD%ACbyte.png?imageView2/2/w/700/h/200/q/75|imageslim" alt=""></p>
+<p>　　32位int类型的233强制转换为8位的byte类型，需要截断前面的24位，截断后最左一位表示符号位，而负数在计算机中以补码形式存在，则11101001转成原码还需减一取反，得到10010111，即为-23。</p>
+<p>另外，有一个容易出错的地方，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//5.6默认是double型的，直接赋给一个float型的变量会出错</span><br><span class="line">float a = 5.6;</span><br><span class="line">//应为</span><br><span class="line">float a = (float)5.6;</span><br></pre></td></tr></table></figure>
+<p>　　一般的，字符串不能直接转换为基本类型，但是可以通过基本类型对应的包装类实现字符串转基本类型，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String a = &quot;25&quot;;</span><br><span class="line">int iValue = Integer.parseInt(a);</span><br></pre></td></tr></table></figure>
+<p>Java中八种基本类型对应的包装类如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">基本类型</th>
+<th style="text-align:center">包装类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:center">Boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:center">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:center">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:center">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:center">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:center">charcter</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:center">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:center">Double</td>
+</tr>
+</tbody>
+</table>
+<p>8个包装类均提供parseXxx(String str)静态方法用于将字符串转成对应的基本类型。</p>
+<h3 id="直接量"><a href="#直接量" class="headerlink" title="直接量"></a>直接量</h3><hr>
+<p>能指定直接量的通常只有三种类型： <strong>基本类型、字符类型、null型</strong></p>
+<ul>
+<li>基本类型： <strong>int、long、float、double、Boolean、char</strong></li>
+<li>字符类型： <strong>String</strong></li>
+<li>null类型： 只有一个值,即为 <strong>null</strong></li>
+</ul>
+<p>需要注意的是：</p>
+<ul>
+<li>String类型的直接量不能赋给其他类型的变量</li>
+<li>null类型的直接量可以直接赋给任何引用类型的变量</li>
+<li>Boolean类型的直接量只能赋给Boolean类型的变量</li>
+</ul>
+<p>　　 <strong>关于字符串直接量有一点需要指出</strong>，当程序第一次使用某个字符串直接量时，Java会使用常量池来缓存该字符串直接量，若后续要使用该字符串直接量，Java会直接使用常量池中的该直接量。</p>
+<p>　　 <strong>常量池</strong>指的是在编译期被确定，并被保存在已编译的.class魏建忠的一些数据。它包括关于 <strong>类、方法、接口</strong>中的常量，也包括 <strong>字符串常量</strong>。</p>
+<p>如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String s0 = &quot;hello&quot;;</span><br><span class="line">String s1 = &quot;hello&quot;;</span><br><span class="line">String s2 = &quot;he&quot; + &quot;llo&quot;;</span><br><span class="line">System.out.println( s0 == s1);</span><br><span class="line">System.out.println( s0 == s2);</span><br></pre></td></tr></table></figure>
+<p>运行结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">true</span><br></pre></td></tr></table></figure>
+<p>　　因为Java会确保每个字符串常量只有一个，不会产生多个副本。例子中的s0和s1中的”hello”都是字符串常量，他们在编译期就被确定了，所以s0==s1返回true;s2同样在编译器就被解析为一个字符串常量，所以s2也是常量池中”hello”的引用。</p>
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><hr>
+<p>Java中的算术运算符可分为如下几种：</p>
+<ul>
+<li><strong>算术运算符</strong></li>
+<li><strong>赋值运算符</strong></li>
+<li><strong>比较运算符</strong></li>
+<li><strong>逻辑运算符</strong></li>
+<li><strong>位运算符</strong></li>
+<li><strong>类型相关运算符</strong></li>
+</ul>
+<h4 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h4><hr>
+<ul>
+<li>+：加法运算符</li>
+<li>-：减法运算符</li>
+<li>*：乘法运算符</li>
+<li>/：除法运算符</li>
+<li>%：求余运算符</li>
+<li>++：自加</li>
+<li>–：自减</li>
+</ul>
+<p><strong>注意</strong>：自加和自减只能用于 <strong>操作变量</strong>，不能用于操作数值直接量、常量或表达式。如：5++、6–都是错误的。</p>
+<p>Java没有提供更复杂的运算符，如果要完成乘方、开方等运算，需借助 <strong>java.lang.Math</strong>类的工具方法完成。</p>
+<h4 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h4><hr>
+<p>用于为变量指定变量值，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;Java&quot;;</span><br><span class="line"></span><br><span class="line">String str2 = str;</span><br></pre></td></tr></table></figure>
+<p><strong>把变量当成一个盛装数据的容器，赋值运算就相当于“装入”的过程</strong>。赋值运算符是 <strong>从右向左</strong>执行计算的，程序先计算得到 <code>=</code>右边的值，再把该值装入左边的变量中。因此， <code>=</code>左边只能是变量。</p>
+<h4 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h4><hr>
+<ul>
+<li>&amp;：按位与。当两位同时为1时才返回1。</li>
+<li>|：按位或。只要有一位为1即可返回1。</li>
+<li>~：按位非。单目运算符，将操作数的每个位（包括符号位）全部取反。</li>
+<li>^ ：按位异或。当两位相同时返回0，不同时返回1。</li>
+<li>&lt;&lt;：左移运算符。</li>
+<li>＞＞：右移运算符。</li>
+<li>＞＞＞：无符号右移运算符。</li>
+</ul>
+<p>实例代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(5 &amp; 9);//输出1</span><br><span class="line">System.out.println(5 | 9);//输出13</span><br></pre></td></tr></table></figure>
+<p>原理如下：</p>
+<p><img src="http://oppqlui3e.bkt.clouddn.com/%E4%B8%8E%E6%88%96%E8%BF%90%E7%AE%97.png" alt=""></p>
+<p>按位异或和按位取反：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(~-5);//输出4</span><br><span class="line">System.out.println(5 ^ 9);//输出12</span><br></pre></td></tr></table></figure>
+<p>按位取反原理如下：<br><img src="http://oppqlui3e.bkt.clouddn.com/%E9%9D%9E%E8%B4%9F5.png" alt=""></p>
+<p>按位异或原理如下：<br><img src="http://oppqlui3e.bkt.clouddn.com/59%E5%BC%82%E6%88%96.png" alt=""></p>
+<p>左移运算符是将操作数的二进制码整体左移指定位数，左移后右边空出来的用0补充，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(5 &lt;&lt; 2);//输出20</span><br><span class="line">System.out.println(-5 &lt;&lt; 2);//输出-20</span><br></pre></td></tr></table></figure>
+<p>左移原理如下：<br><img src="http://oppqlui3e.bkt.clouddn.com/%E5%B7%A6%E7%A7%BB%E8%BF%90%E7%AE%97.png" alt=""></p>
+<p>　　Java的右移运算符有两个 <strong>&gt;&gt;、&gt;&gt;&gt;</strong>，对于 <code>&gt;&gt;</code>运算符而言，把第一个操作数的二进制码右移指定位数后，左边空出来的为以原来的符号位填充，即如果是一个整数则以0补充，如果第一个操作数是负数则补1。 <code>&gt;&gt;&gt;</code>把第一个操作数右移指定位数后总以0补充。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(5 &gt;&gt; 2);//输出-2</span><br><span class="line">System.out.println(-5 &gt;&gt;&gt; 2);//输出1073741822</span><br></pre></td></tr></table></figure>
+<p><strong>-5&gt;&gt;2的运算原理</strong>：<br><img src="http://oppqlui3e.bkt.clouddn.com/-5%E5%8F%B3%E7%A7%BB2%E4%BD%8D.png" alt=""></p>
+<p><strong>-5&gt;&gt;&gt;2的运算原理</strong>:</p>
+<p><img src="http://oppqlui3e.bkt.clouddn.com/-5%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB.png" alt=""></p>
+<p>注意： <strong>进行移位运算不会改变操作数本身，只是得到一个新的运算结果，原来的操作数本身不会改变</strong>。</p>
+<h4 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h4><hr>
+<p>比较运算符用于判断两个变量或常量的大小，其结果是一个布尔值（true或false），如下：</p>
+<ul>
+<li>＞：大于，（只支持数值类型）</li>
+<li>＞=：大于等于，（只支持数值类型）</li>
+<li>&lt;：小于，（只支持数值类型）</li>
+<li>&lt;=：小于等于，（只支持数值类型）</li>
+<li>==：等于， 如果两边都是数值类型，即使它们数据类型不同，只要值相等也会返回true。如果两边是引用类型， <strong>只有当两个引用变量具有父子关系时才可比较</strong>，同时，这两个变量必须指向 <strong>同一个对象</strong>才会返回true。</li>
+<li>!=：不等于，（同==）</li>
+</ul>
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><hr>
+<p>用于操作两个布尔类型的变量或常量，如下：</p>
+<ul>
+<li>&amp;&amp;：与，两边为true时返回true</li>
+<li>&amp;： 不短路与，（同&amp;&amp;）但不会短路</li>
+<li>||：或，两边有一个为true返回true</li>
+<li>|： 不短路或</li>
+<li>!： 非，只有一个操作数，为true返回false</li>
+<li>^ ：异或，两边结果不同时返回true，相同返回false</li>
+</ul>
+<h4 id="三目运算符"><a href="#三目运算符" class="headerlink" title="三目运算符"></a>三目运算符</h4><hr>
+<p>三目运算符只有一个：（？：）</p>
+<p>格式为：(expression) ? if-true-statement : if-false-statment;</p>
+<h4 id="运算符结合性和优先级"><a href="#运算符结合性和优先级" class="headerlink" title="运算符结合性和优先级"></a>运算符结合性和优先级</h4><hr>
+<p><strong>单目运算符、赋值运算符、三目运算符</strong>是 <strong>从右向左</strong>运算的。</p>
+<p>下表为运算符优先级表，上一行优先于下一行。</p>
+<p><img src="http://oppqlui3e.bkt.clouddn.com/%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7.png" alt=""></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">数据类型转换</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/Java基础//" class="article-tag-list-link color2">Java基础</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2016/09/11/Java基础原理笔记（二）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2016/09/17/计算机网络笔记整理（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          计算机网络笔记整理（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2016/09/10/Java基础原理笔记（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java基础原理笔记(一)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +533,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

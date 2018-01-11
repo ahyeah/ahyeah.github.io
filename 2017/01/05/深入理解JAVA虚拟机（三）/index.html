@@ -6,14 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>深入理解Java虚拟机（三） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;在了解了Java运行时内存区域之后，我们知道虚拟机可能造成内存溢出OOM，虽然有垃圾回收机制，但是可能也不能避免，我们现在就看看Java的垃圾收集机制为例避免内存溢出异常已经做出了哪些努力。">
+<meta name="keywords" content="Java的垃圾收集机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java虚拟机（三）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2017/01/05/深入理解JAVA虚拟机（三）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;在了解了Java运行时内存区域之后，我们知道虚拟机可能造成内存溢出OOM，虽然有垃圾回收机制，但是可能也不能避免，我们现在就看看Java的垃圾收集机制为例避免内存溢出异常已经做出了哪些努力。">
+<meta property="og:image" content="http://img.my.csdn.net/uploads/201210/03/1349278110_8410.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-10.png">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-9.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-11.jpg">
+<meta property="og:image" content="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-12.jpg">
+<meta property="og:updated_time" content="2017-07-11T08:37:16.915Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="深入理解Java虚拟机（三）">
+<meta name="twitter:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;在了解了Java运行时内存区域之后，我们知道虚拟机可能造成内存溢出OOM，虽然有垃圾回收机制，但是可能也不能避免，我们现在就看看Java的垃圾收集机制为例避免内存溢出异常已经做出了哪些努力。">
+<meta name="twitter:image" content="http://img.my.csdn.net/uploads/201210/03/1349278110_8410.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +160,282 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-深入理解JAVA虚拟机（三）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解Java虚拟机（三）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2017/01/05/深入理解JAVA虚拟机（三）/" class="archive-article-date">
+  	<time datetime="2017-01-05T02:23:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-05</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;在了解了Java运行时内存区域之后，我们知道虚拟机可能造成内存溢出OOM，虽然有垃圾回收机制，但是可能也不能避免，<font color="red">我们现在就看看Java的垃圾收集机制为例避免内存溢出异常已经做出了哪些努力。</font></p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>说起GC，我们需要做下面三件事情：</p>
+<ol>
+<li>哪些内存需要回收？</li>
+<li>何时回收？</li>
+<li>如何回收？</li>
+</ol>
+<p>&#160; &#160; &#160; &#160;现在内存的动态分配、垃圾回收技术已经相当的成熟，那我们为什么还要去学习内存分配和GC呢？答案：<font color="red">当需要排查各种OOM问题时，当垃圾收集成为系统达到更高并发量的瓶颈时，我就需要对自动化的技术实施必要的监控和调节。</font></p>
+<h2 id="怎么判断对象已死？"><a href="#怎么判断对象已死？" class="headerlink" title="怎么判断对象已死？"></a>怎么判断对象已死？</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>&#160; &#160; &#160; &#160;给对象添加一个引用计数器，每当有一个地方引用它，计数器就加1；失效就减1；任何时刻为0的对象就是不可能再被使用的。</p>
+<p>&#160; &#160; &#160; &#160;缺点：不能解决循环引用的问题。</p>
+<h3 id="根搜索算法"><a href="#根搜索算法" class="headerlink" title="根搜索算法"></a>根搜索算法</h3><p>&#160; &#160; &#160; &#160;Java和C#所采用的方式，基本原理：通过一系列名为GC Roots的对象为起点，从这些根节点向下搜索，走过的路径叫引用链，当一个对象到GC Roots没有任何引用链相连，则证明此对象是不可用的。</p>
+<p>&#160; &#160; &#160; &#160;Java语言中可作为GC Roots的对象包括：虚拟机栈中（本地变量表）引用的对象、方法区中的类静态属性引用的对象、方法区中的常量引用对象、本地方法栈中JNI，native方法引用的对象。</p>
+<h2 id="引用的几个类型"><a href="#引用的几个类型" class="headerlink" title="引用的几个类型"></a>引用的几个类型</h2><p>&#160; &#160; &#160; &#160;无论是哪种方式，判断存活都与引用有关。引用概念在JDK1.2之后进行了扩充，包括四种：</p>
+<ol>
+<li>强引用；只要引用存在，垃圾回收器永远不会回收。</li>
+<li>软引用；系统将要发生内存溢出之前，会把这些对象列进回收范围并进行第二次回收。如果还不够菜抛出异常。</li>
+<li>弱引用；只能存活到下一次垃圾回收发生之前。</li>
+<li>虚引用；一个对象是否有虚引用的存在，完全不会对其生命时间构成影响，也无法通过虚引用来获得实例，完全只是为了希望在对这个回收时收到一个系统通知。</li>
+</ol>
+<h2 id="生存还是死亡？"><a href="#生存还是死亡？" class="headerlink" title="生存还是死亡？"></a>生存还是死亡？</h2><p>&#160; &#160; &#160; &#160;根搜索算法不可达的对象也并不是一定被回收，这时候它处于缓刑阶段。至少要经历两次标记过程。如果发现没有引用链，那么标记一次并且进行一次筛选，条件是对象是否有必要执行finalize（），当对象没有覆盖finalize方法，或者已经被虚拟机调用过，都是为没有必要执行。</p>
+<p>&#160; &#160; &#160; &#160;如果判断为有必要执行，就会放置在一个F-Queue队列之中，并在稍后由一条虚拟机自动建立的、低优先级的Finalize线程区执行。但是并不承诺等待它运行结束，原因是：如果一个对象的finalize方法执行缓慢或者死循环了，其他对象将出现永久等待。</p>
+<p>&#160; &#160; &#160; &#160;finalize（）是对象逃脱死亡命运的最后一次机会，稍后GC将对F-Queue中的对象进行第二次标记，如果对象在finalize中拯救自己—只要重新与引用链上的任何一个对象相连即可。只能自救一次，因为finalize最多使用一次。</p>
+<h2 id="回收方法区"><a href="#回收方法区" class="headerlink" title="回收方法区"></a>回收方法区</h2><p>&#160; &#160; &#160; &#160;主要回收内容：废弃常量和无用的类。回收废弃常量与回收Java堆中的对象类似。</p>
+<p>&#160; &#160; &#160; &#160;判断无用的类得满足下面三个条件：</p>
+<ol>
+<li>加载该类的加载器已被回收</li>
+<li>所有类的实例已经被回收</li>
+<li>该类的java.lang.Class对象没有任何地方引用，无法反射得到。</li>
+</ol>
+<p>满足了也不一定回收，常用的参数如下：</p>
+<ol>
+<li>-verbose：class</li>
+<li>-xx：+TraceClassLoading</li>
+<li>-XX：+TraceClassUnLoding</li>
+</ol>
+<p>&#160; &#160; &#160; &#160;在大量使用反射、动态代理、CGLib等bytecode框架的时候，以及JSP、OSGi这类频繁自定义ClassLoader的场景都需要虚拟机具备类卸载的功能。</p>
+<h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><h3 id="标记-清除"><a href="#标记-清除" class="headerlink" title="标记-清除"></a>标记-清除</h3><p>&#160; &#160; &#160; &#160;首先标记出所有需要回收的对象，在标记完之后统一回收。</p>
+<p>&#160; &#160; &#160; &#160;缺点：效率低，产生的碎片多。</p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>&#160; &#160; &#160; &#160;他将可用的内存划分为等大小的两块，每次只使用其中一块，当用完了，把存活的对象都复制到另一半上，然后把第一块的一次性清理。</p>
+<p>缺点：内存利用率低</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>&#160; &#160; &#160; &#160;让所有存活的对象都向一端移动，然后直接清楚掉端边界以外的内存。</p>
+<h3 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h3><p>&#160; &#160; &#160; &#160;当前商业虚拟机都常用分代收集算法，更具对象的存活周期的不同将内存划分为几块，一般是新生代和老年代，这样就可以根据各个年代的特点采用最适当的<strong>收集算法</strong>。在新生代中，每次都有大批对象死去，只有少量的存活，那就选用复制算法。（复制的内容比较少，复制少量存活对象成本），而老年代中因为对象存活率高，就必须使用标记-清理或者标记-整理。</p>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><p>&#160; &#160; &#160; &#160;包含的收集器如下：<br><img src="http://img.my.csdn.net/uploads/201210/03/1349278110_8410.jpg" alt=""></p>
+<h3 id="serial"><a href="#serial" class="headerlink" title="serial"></a>serial</h3><p>&#160; &#160; &#160; &#160;单线程收集器，垃圾收集时，必须暂停所有工作线程。“Stop The World”。</p>
+<p>优势：简单而高效，没有线程切换，在客户端模式是个很好选择。</p>
+<h3 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h3><p>&#160; &#160; &#160; &#160;是Serial的多线程版本（在新生代垃圾回收的时候采用多GC线程），是服务器模式下首选的新生代收集器，目前只有它能与CMS收集器配合工作。但是作为老年代的收集器，却无法和Parallel Scavenge配合工作。</p>
+<p>&#160; &#160; &#160; &#160;它在单核环境中绝对不会比serial效果好，多核也不能百分之百比serial好。</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-10.png" alt=""></p>
+<h3 id="Parallel-Scavenge"><a href="#Parallel-Scavenge" class="headerlink" title="Parallel Scavenge"></a>Parallel Scavenge</h3><p>&#160; &#160; &#160; &#160;是一个新生代收集器，它是使用复制算法的收集器，又是并行的多线程收集器，特别之处是它注重达到一个可控制的吞吐量，可通过设置参数来完成。</p>
+<h3 id="serial-Old"><a href="#serial-Old" class="headerlink" title="serial Old"></a>serial Old</h3><p>&#160; &#160; &#160; &#160;是serial的老年代版本，采用的是标记-整理算法。主要意义是客户端模式下使用。如果使用在服务器模式下，主要有两个用途：搭配Parallel Scavenge使用，或者作为CMS收集器的后备预案。</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-9.jpg" alt=""></p>
+<h3 id="Parallel-Old"><a href="#Parallel-Old" class="headerlink" title="Parallel Old"></a>Parallel Old</h3><p>&#160; &#160; &#160; &#160;之前新生代 Parallel Scavenge很尴尬，因为只能喝serial old组，被单线程所拖累。知道Parallel Old出现，吞吐量优先收集器终于有了比较名副其实的应用组合。</p>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-11.jpg" alt=""></p>
+<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>&#160; &#160; &#160; &#160;是一种以获取最短回收停顿时间为目标的收集器。目前很多一部分的Java应用都集中在服务器上，尤其注重响应速度，希望系统停顿的时间越短越好。CMS就非常符合这个要求。</p>
+<p>&#160; &#160; &#160; &#160;基于标记-清除的，但是改进了分以下四步：</p>
+<ol>
+<li>初识标记；仍需要暂停其他线程，仅仅是标记一下GC Roots能直接关联的对象，速度很快。</li>
+<li>并发标记；进行GC Roots Tracing过程</li>
+<li>重新标记；仍需要暂停其他线程，修正并发标记期间，因用户程序继续运行而导致的一部分改变，会比?????标记消耗时间长一些，比并发标记时间短。</li>
+<li>并发清除；消耗时间也较长。</li>
+</ol>
+<p><img src="http://7xkjk9.com1.z0.glb.clouddn.com/jvm-12.jpg" alt=""></p>
+<h4 id="CMS-优缺点"><a href="#CMS-优缺点" class="headerlink" title="CMS 优缺点"></a>CMS 优缺点</h4><p>&#160; &#160; &#160; &#160;CMS的优点很明显：并发收集、低停顿（由于进行垃圾收集的时间主要耗在并发标记与并发清除这两个过程，虽然初始标记和重新标记仍然需要暂停用户线程，但是从总体上看，这部分占用的时间相比其他两个步骤很小，所以可以认为是低停顿的）。</p>
+<p>&#160; &#160; &#160; &#160;尽管如此，CMS收集器的缺点也是很明显的：</p>
+<p>&#160; &#160; &#160; &#160;1.对CPU资源太敏感，这点可以这么理解，虽然在并发标记阶段用户线程没有暂停，但是由于收集器占用了一部分CPU资源，导致程序的响应速度变慢。（增量式并发收集器i-CMS）</p>
+<p>&#160; &#160; &#160; &#160;2.CMS收集器无法处理浮动垃圾。所谓的“浮动垃圾”，就是在并发标记阶段，由于用户程序在运行，那么自然就会有新的垃圾产生，这部分垃圾被标记过后，CMS无法在当次集中处理它们（为什么？原因在于CMS是以获取最短停顿时间为目标的，自然不可能在一次垃圾处理过程中花费太多时间），只好在下一次GC的时候处理。这部分未处理的垃圾就称为“浮动垃圾”。（调高-XX：CMSInitiatingOccupancyFraction参数，太高又会造成CMF失败，后备预案就是采用Serial收集器对老年代进行，反而效率会降低）。</p>
+<p>&#160; &#160; &#160; &#160;3.由于CMS收集器是基于“标记-清除”算法的，前面说过这个算法会导致大量的空间碎片的产生，一旦空间碎片过多，大对象就没办法给其分配内存,那么即使内存还有剩余空间容纳这个大对象，但是却没有连续的足够大的空间放下这个对象，所以虚拟机就会触发一次Full GC（这个后面还会提到）这个问题的解决是通过控制参数-XX:+UseCMSCompactAtFullCollection，用于在CMS垃圾收集器顶不住要进行FullGC的时候开启空间碎片的合并整理过程。相应停顿也不得不变长。</p>
+<h3 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h3><p>&#160; &#160; &#160; &#160;G1时当前收集器技术中最前沿的成果。相比之前的CMS收集器又两个改进：</p>
+<ol>
+<li>基于标记-整理算法实现，也就是说不会产生碎片。</li>
+<li>精确的控制停顿，在M毫秒哪，收集时间不超过N毫秒，这几乎已经时实时java（RTSJ）的垃圾收集器特征了。</li>
+</ol>
+<p>&#160; &#160; &#160; &#160;将整个Java堆划分为多个大小固定的独立区域，并且跟踪这些区域厘米的垃圾堆积程度，后台维护一个优先列表，每次根据允许的收集时间，优先回收垃圾最多的区域，这就是Garbage First的由来。保证有效时间内获得更高的收集效率。</p>
+<h2 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h2><p>&#160; &#160; &#160; &#160;Java技术体系中所提倡的自动内存管理最终归结为自动化解决了两个问题：给内存分配对象以及回收分配给对象的内存。接下来再来说说内存分配，往大方向讲，就是在堆上分配。<br>根据设置参数和收集器的使用组合不同，内存分配机制可能不同，但是我们讲述一般性规则，分析之前先看看两种GC：</p>
+<ol>
+<li>新生代GC（Minor GC）：指发生在新生代的垃圾收集动作，比较频繁，回收速度也快。</li>
+<li>老年代GC （Full GC／Major GC）：发生在老年代的GC，经常伴随着至少一次Minor GC，但不是绝对，速度较慢，。</li>
+</ol>
+<h3 id="对象优先在Eden中分配"><a href="#对象优先在Eden中分配" class="headerlink" title="对象优先在Eden中分配"></a>对象优先在Eden中分配</h3><p>&#160; &#160; &#160; &#160;大多数情况下，对象优先在新生代Eden区中分配。当Eden没有足够空间的时候，会发起一次Minor GC。</p>
+<h3 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h3><p>&#160; &#160; &#160; &#160;需要大量连续空间的Java对象，很长的字符串及数组等，所以程序中不要写短命大对象。（不进入Eden和Survivor时因为他们采用复制算法）。</p>
+<h3 id="长期存活的对象进入老年代"><a href="#长期存活的对象进入老年代" class="headerlink" title="长期存活的对象进入老年代"></a>长期存活的对象进入老年代</h3><p>&#160; &#160; &#160; &#160;虚拟机给每一个对象一个年龄计数器，默认15岁。</p>
+<h3 id="动态对象年龄判断"><a href="#动态对象年龄判断" class="headerlink" title="动态对象年龄判断"></a>动态对象年龄判断</h3><p>&#160; &#160; &#160; &#160;如果Survivor空间中相同年龄所以对象总和大于空间的一半，年龄大于等于该年龄的进入老年代。</p>
+<h3 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h3><p>&#160; &#160; &#160; &#160;发生 Minor GC时，虚拟机会检测晋升到老年代的空间是否够，如果不够就发起一次Full GC，如果小于，如果参数HannlePromotionFailure设置允许担保失败，就只会进行Minor GC；</p>
+<h3 id="Minor-GC／Full-GC触发条件"><a href="#Minor-GC／Full-GC触发条件" class="headerlink" title="Minor GC／Full GC触发条件"></a>Minor GC／Full GC触发条件</h3><ol>
+<li><p>Minor GC触发条件：当Eden区满时，触发Minor GC。</p>
+</li>
+<li><p>Full GC触发条件：</p>
+</li>
+</ol>
+<p>（1）调用System.gc时，系统建议执行Full GC，但是不必然执行</p>
+<p>（2）老年代空间不足</p>
+<p>（3）方法区空间不足</p>
+<p>（4）通过Minor GC后进入老年代的平均大小大于老年代的可用内存</p>
+<p>（5）由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>&#160; &#160; &#160; &#160;本次介绍了垃圾收集算法和多种收集器，以及自动内存分配的一些机制。内存回收与垃圾收集在很多时候都是影响系统性能、并发俄力的主要因素之一，虚拟机提供了多种不同收集器与大量调节参数。必须要了解每个具体收集器行为、优点缺点。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&#160; &#160; &#160; &#160;文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！！！</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java的垃圾收集机制</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/Java虚拟机//" class="article-tag-list-link color3">Java虚拟机</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2017/01/05/深入理解JAVA虚拟机（三）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2017/01/06/深入理解JAVA虚拟机（四）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          深入理解Java虚拟机（四）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2017/01/04/深入理解JAVA虚拟机（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">深入理解Java虚拟机（二）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +459,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

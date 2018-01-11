@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>mybatis整理笔记（四） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言本文介绍了mybatis的入门程序的添加、删除、更新用户">
+<meta name="keywords" content="入门程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis整理笔记（四）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2016/11/02/mybatis整理笔记（四）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本文介绍了mybatis的入门程序的添加、删除、更新用户">
+<meta property="og:updated_time" content="2017-08-21T09:22:11.256Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="mybatis整理笔记（四）">
+<meta name="twitter:description" content="前言本文介绍了mybatis的入门程序的添加、删除、更新用户">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +154,225 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-mybatis整理笔记（四）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mybatis整理笔记（四）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2016/11/02/mybatis整理笔记（四）/" class="archive-article-date">
+  	<time datetime="2016-11-02T09:17:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-02</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文介绍了mybatis的入门程序的添加、删除、更新用户<br><a id="more"></a></p>
+<h2 id="映射文件"><a href="#映射文件" class="headerlink" title="映射文件"></a>映射文件</h2><ul>
+<li>User.xml,在入门程序一基础上增加</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 添加用户</span></span><br><span class="line"><span class="comment">    parameterType：指定输入 参数类型是pojo（包括 用户信息）</span></span><br><span class="line"><span class="comment">    #&#123;&#125;中指定pojo的属性名，接收到pojo对象的属性值，mybatis通过OGNL获取对象的属性值</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"insertUser"</span> <span class="attr">parameterType</span>=<span class="string">"com.iot.mybatis.po.User"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">     将插入数据的主键返回，返回到user对象中</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     SELECT LAST_INSERT_ID()：得到刚insert进去记录的主键值，只适用与自增主键</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     keyProperty：将查询到主键值设置到parameterType指定的对象的哪个属性</span></span><br><span class="line"><span class="comment">     order：SELECT LAST_INSERT_ID()执行顺序，相对于insert语句来说它的执行顺序</span></span><br><span class="line"><span class="comment">     resultType：指定SELECT LAST_INSERT_ID()的结果类型</span></span><br><span class="line"><span class="comment">      --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">selectKey</span> <span class="attr">keyProperty</span>=<span class="string">"id"</span> <span class="attr">order</span>=<span class="string">"AFTER"</span> <span class="attr">resultType</span>=<span class="string">"java.lang.Integer"</span>&gt;</span></span><br><span class="line">      SELECT LAST_INSERT_ID()</span><br><span class="line">    <span class="tag">&lt;/<span class="name">selectKey</span>&gt;</span></span><br><span class="line">    INSERT INTO user (username,birthday,sex,address)values (#&#123;username&#125;,#&#123;birthday&#125;,#&#123;sex&#125;,#&#123;address&#125;)</span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        使用mysql的uuid（）生成主键</span></span><br><span class="line"><span class="comment">        执行过程：</span></span><br><span class="line"><span class="comment">        首先通过uuid()得到主键，将主键设置到user对象的id属性中</span></span><br><span class="line"><span class="comment">        其次在insert执行时，从user对象中取出id属性值</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--  &lt;selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String"&gt;</span></span><br><span class="line"><span class="comment">        SELECT uuid()</span></span><br><span class="line"><span class="comment">    &lt;/selectKey&gt;</span></span><br><span class="line"><span class="comment">    insert into user(id,username,birthday,sex,address) value(#&#123;id&#125;,#&#123;username&#125;,#&#123;birthday&#125;,#&#123;sex&#125;,#&#123;address&#125;) --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 删除 用户</span></span><br><span class="line"><span class="comment">    根据id删除用户，需要输入 id值</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"deleteUser"</span> <span class="attr">parameterType</span>=<span class="string">"java.lang.Integer"</span>&gt;</span></span><br><span class="line">    delete from user where id=#&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 根据id更新用户</span></span><br><span class="line"><span class="comment">分析：</span></span><br><span class="line"><span class="comment">需要传入用户的id</span></span><br><span class="line"><span class="comment">需要传入用户的更新信息</span></span><br><span class="line"><span class="comment">parameterType指定user对象，包括 id和更新信息，注意：id必须存在</span></span><br><span class="line"><span class="comment">#&#123;id&#125;：从输入 user对象中获取id属性值</span></span><br><span class="line"><span class="comment"> --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"updateUser"</span> <span class="attr">parameterType</span>=<span class="string">"com.iot.mybatis.po.User"</span>&gt;</span></span><br><span class="line">    update user set username=#&#123;username&#125;,birthday=#&#123;birthday&#125;,sex=#&#123;sex&#125;,address=#&#123;address&#125;</span><br><span class="line">    where id=#&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>(注：这里的<code>birthday</code>字段在mysql表中是DATE类型，在User类中<code>birthday</code>属性是java的<code>java.util.Date</code>类型，并没有进行转换就插入成功了。</p>
+<p>看到有的文章说，在字段中有Date和DateTime类型，在插入数据时只要将实体的属性设置成Timestamp就会对应mysql的DateTime类型，Date会对应mysql的Date类型:<br><code>#{modified_date,jdbcType=TIMESTAMP}、#{date,jdbcType=DATE}</code></p>
+<p>我上面的<code>birthday</code>，配置成<code>#{birthday,jdbcType=TIMESTAMP}</code>，结果也插入成功了，具体实现待查)</p>
+<h2 id="程序代码"><a href="#程序代码" class="headerlink" title="程序代码"></a>程序代码</h2><ul>
+<li>User.java,在入门程序一基础上增加三个测试方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加用户信息</span></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertUserTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">      <span class="comment">// mybatis配置文件</span></span><br><span class="line">      String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">      <span class="comment">// 得到配置文件流</span></span><br><span class="line">      InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 创建会话工厂，传入mybatis的配置文件信息</span></span><br><span class="line">      SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder()</span><br><span class="line">              .build(inputStream);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 通过工厂得到SqlSession</span></span><br><span class="line">      SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">      <span class="comment">// 插入用户对象</span></span><br><span class="line">      User user = <span class="keyword">new</span> User();</span><br><span class="line">      user.setUsername(<span class="string">"王小军"</span>);</span><br><span class="line">      user.setBirthday(<span class="keyword">new</span> Date());</span><br><span class="line">      user.setSex(<span class="string">"1"</span>);</span><br><span class="line">      user.setAddress(<span class="string">"河南郑州"</span>);</span><br><span class="line"></span><br><span class="line">      sqlSession.insert(<span class="string">"test.insertUser"</span>, user);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 提交事务</span></span><br><span class="line">      sqlSession.commit();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 获取用户信息主键</span></span><br><span class="line">      System.out.println(user.getId());</span><br><span class="line">      <span class="comment">// 关闭会话</span></span><br><span class="line">      sqlSession.close();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 根据id删除 用户信息</span></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteUserTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">      <span class="comment">// mybatis配置文件</span></span><br><span class="line">      String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">      <span class="comment">// 得到配置文件流</span></span><br><span class="line">      InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 创建会话工厂，传入mybatis的配置文件信息</span></span><br><span class="line">      SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder()</span><br><span class="line">              .build(inputStream);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 通过工厂得到SqlSession</span></span><br><span class="line">      SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 传入id删除 用户</span></span><br><span class="line">      sqlSession.delete(<span class="string">"test.deleteUser"</span>, <span class="number">29</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 提交事务</span></span><br><span class="line">      sqlSession.commit();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 关闭会话</span></span><br><span class="line">      sqlSession.close();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 更新用户信息</span></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateUserTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">      <span class="comment">// mybatis配置文件</span></span><br><span class="line">      String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">      <span class="comment">// 得到配置文件流</span></span><br><span class="line">      InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 创建会话工厂，传入mybatis的配置文件信息</span></span><br><span class="line">      SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder()</span><br><span class="line">              .build(inputStream);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 通过工厂得到SqlSession</span></span><br><span class="line">      SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">      <span class="comment">// 更新用户信息</span></span><br><span class="line"></span><br><span class="line">      User user = <span class="keyword">new</span> User();</span><br><span class="line">      <span class="comment">//必须设置id</span></span><br><span class="line">      user.setId(<span class="number">27</span>);</span><br><span class="line">      user.setUsername(<span class="string">"王大军"</span>);</span><br><span class="line">      user.setBirthday(<span class="keyword">new</span> Date());</span><br><span class="line">      user.setSex(<span class="string">"2"</span>);</span><br><span class="line">      user.setAddress(<span class="string">"河南郑州"</span>);</span><br><span class="line"></span><br><span class="line">      sqlSession.update(<span class="string">"test.updateUser"</span>, user);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 提交事务</span></span><br><span class="line">      sqlSession.commit();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 关闭会话</span></span><br><span class="line">      sqlSession.close();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>自增主键返回</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">selectKey</span> <span class="attr">keyProperty</span>=<span class="string">"id"</span> <span class="attr">order</span>=<span class="string">"AFTER"</span> <span class="attr">resultType</span>=<span class="string">"java.lang.Integer"</span>&gt;</span></span><br><span class="line">          SELECT LAST_INSERT_ID()</span><br><span class="line"><span class="tag">&lt;/<span class="name">selectKey</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果没有在上面的配置中配置<code>resultType</code>，则会报下面的异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">org.apache.ibatis.exceptions.PersistenceException: </span><br><span class="line">### Error updating database.  Cause: org.apache.ibatis.executor.ExecutorException: A query was run and no Result Maps were found for the Mapped Statement &apos;test.insertUser!selectKey&apos;.  It&apos;s likely that neither a Result Type nor a Result Map was specified.</span><br><span class="line">### The error may exist in sqlmap/User.xml</span><br><span class="line">### The error may involve test.insertUser!selectKey-Inline</span><br><span class="line">### The error occurred while setting parameters</span><br><span class="line">### SQL: SELECT LAST_INSERT_ID()</span><br><span class="line">### Cause: org.apache.ibatis.executor.ExecutorException: A query was run and no Result Maps were found for the Mapped Statement &apos;test.insertUser!selectKey&apos;.  It&apos;s likely that neither a Result Type nor a Result Map was specified.</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">Caused by: org.apache.ibatis.executor.ExecutorException: A query was run and no Result Maps were found for the Mapped Statement &apos;test.insertUser!selectKey&apos;.  It&apos;s likely that neither a Result Type nor a Result Map was specified.</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><code>#{}</code>和<code>${}</code></li>
+</ul>
+<p><code>#{}</code>表示一个占位符号，<code>#{}</code>接收输入参数，类型可以是简单类型，pojo、hashmap。</p>
+<p>如果接收简单类型，<code>#{}</code>中可以写成value或其它名称。</p>
+<p><code>#{}</code>接收pojo对象值，通过OGNL读取对象中的属性值，通过属性.属性.属性…的方式获取对象属性值。</p>
+<p><code>${}</code>表示一个拼接符号，会引用sql注入，所以<strong>不建议使用<code>${}</code></strong>。</p>
+<p><code>${}</code>接收输入参数，类型可以是简单类型，pojo、hashmap。</p>
+<p>如果接收简单类型，<code>${}</code>中只能写成value。</p>
+<p><code>${}</code>接收pojo对象值，通过OGNL读取对象中的属性值，通过属性.属性.属性…的方式获取对象属性值。</p>
+<h2 id="mybatis和hibernate本质区别和应用场景"><a href="#mybatis和hibernate本质区别和应用场景" class="headerlink" title="mybatis和hibernate本质区别和应用场景"></a>mybatis和hibernate本质区别和应用场景</h2><ul>
+<li>hibernate</li>
+</ul>
+<p>是一个标准ORM框架（对象关系映射）。入门门槛较高的，不需要程序写sql，sql语句自动生成了。对sql语句进行优化、修改比较困难的。</p>
+<p>应用场景：适用与需求变化不多的中小型项目，比如：后台管理系统，erp、orm、oa。。</p>
+<ul>
+<li>mybatis</li>
+</ul>
+<p>专注是sql本身，需要程序员自己编写sql语句，sql修改、优化比较方便。mybatis是一个不完全的ORM框架，虽然程序员自己写sql，mybatis也可以实现映射（输入映射、输出映射）。</p>
+<p>应用场景：适用与需求变化较多的项目，比如：互联网项目。</p>
+<p>企业进行技术选型，以低成本高回报作为技术选型的原则，根据项目组的技术力量进行选择。</p>
+<hr>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">入门程序</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/mybatis//" class="article-tag-list-link color3">mybatis</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2016/11/02/mybatis整理笔记（四）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2016/11/03/mybatis整理笔记（五）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          mybatis整理笔记（五）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2016/10/31/mybatis整理笔记（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mybatis整理笔记（三）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +396,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

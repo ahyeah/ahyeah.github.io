@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>Java基础之面向对象（二） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;本篇继续讲面向对象特性，自动装箱和拆箱，抽象和接口，内部类和lambda表达式，枚举类型等方面。">
+<meta name="keywords" content="面向对象特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础之面向对象（二）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2017/02/10/Java基础之面向对象（二）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;本篇继续讲面向对象特性，自动装箱和拆箱，抽象和接口，内部类和lambda表达式，枚举类型等方面。">
+<meta property="og:updated_time" content="2017-08-16T05:36:00.680Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="Java基础之面向对象（二）">
+<meta name="twitter:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;本篇继续讲面向对象特性，自动装箱和拆箱，抽象和接口，内部类和lambda表达式，枚举类型等方面。">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +154,248 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Java基础之面向对象（二）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java基础之面向对象（二）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2017/02/10/Java基础之面向对象（二）/" class="archive-article-date">
+  	<time datetime="2017-02-10T07:25:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-10</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;本篇继续讲面向对象特性，自动装箱和拆箱，抽象和接口，内部类和lambda表达式，枚举类型等方面。</p>
+  <a id="more"></a>
+<h2 id="自动装箱、拆箱"><a href="#自动装箱、拆箱" class="headerlink" title="自动装箱、拆箱"></a>自动装箱、拆箱</h2><p>&#160; &#160; &#160; &#160;JDK 1.5之前，Java有8个基本数据类型不能当前Object类型，之后就才用自动装箱和拆箱，可以把一个基本数据类型直接赋值给包装类变量，也可以把包装类对象直接复制给一个对应的基本数据类型。</p>
+<h2 id="类成员"><a href="#类成员" class="headerlink" title="类成员"></a>类成员</h2><p>&#160; &#160; &#160; &#160;用static关键字修饰的成员就是类成员，static语义代表的是修饰的对象属于整个类而不属于任何实例。</p>
+<p>&#160; &#160; &#160; &#160;Java中只能包括五种：成员变量、方法、构造器、初始化块、内部类（包括接口、枚举）、以static修饰的成员就是类成员，他能修饰除构造器之外的其他四种。</p>
+<h2 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h2><p>&#160; &#160; &#160; &#160;在一些特殊场景下，要求不允许自由创建该类的对象，而只允许为该类创建一个对象，为了避免该类被自由创建，类的构造器使用private修饰，从而把该类的所有构造器隐藏起来。但是还要有一个public方法作为该类的访问点，用于创建该类的对象，且该方法必须使用static修饰，除此之外，该类还不许知道已经缓存过已经创建的对象，否则该类无法知道是否创建过该对象。下面就手写代码实现一个单例类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;  </span><br><span class="line">    private static Singleton instance;  </span><br><span class="line">    private Singleton ()&#123;&#125;  </span><br><span class="line">  </span><br><span class="line">    public static Singleton getInstance() &#123;  </span><br><span class="line">    if (instance == null) &#123;  </span><br><span class="line">        instance = new Singleton();  </span><br><span class="line">    &#125;  </span><br><span class="line">    return instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;但是这也只是懒汉，单线程情况，还有几种写法参考博客：<a href="https://www.oschina.net/code/snippet_107039_6062" target="_blank" rel="noopener">单例的5种写法</a>。</p>
+<h2 id="final修饰符"><a href="#final修饰符" class="headerlink" title="final修饰符"></a>final修饰符</h2><p>&#160; &#160; &#160; &#160;final关键字可以修饰类、变量和方法，用于它修饰的类，方法和变量不可变，类似C#中的sealed。修饰变量包括成员变量和局部变量和形参。准确说是一旦赋类初始值就不能被改变。final还可以完成C中宏定义的类似功能。</p>
+<h3 id="final成员变量"><a href="#final成员变量" class="headerlink" title="final成员变量"></a>final成员变量</h3><p>&#160; &#160; &#160; &#160;final修饰的成员变量必须由程序员显式的指定初始值。</p>
+<h3 id="final局部变量"><a href="#final局部变量" class="headerlink" title="final局部变量"></a>final局部变量</h3><p>&#160; &#160; &#160; &#160; 系统不会对局部变量进行初始化，局部变量必须由程序员显式初始化。但是用final修饰局部变量时，既可以在定义时，指定默认初始值，也可以不指定。</p>
+<h3 id="final修饰基本变量和引用变量区别"><a href="#final修饰基本变量和引用变量区别" class="headerlink" title="final修饰基本变量和引用变量区别"></a>final修饰基本变量和引用变量区别</h3><p>&#160; &#160; &#160; &#160;当使用final修饰基本变量时，不能对基本变量类型进行重新赋值，但对引用来说，仅仅是一个引用地址，final只能保证引用类型变量指定的地址不会改变，一直引用一个对象，但这个对象完全可以发生改变。</p>
+<h3 id="final方法"><a href="#final方法" class="headerlink" title="final方法"></a>final方法</h3><p>&#160; &#160; &#160; &#160;不想子类重写的可以用final修饰，比如Object中的getClass（）方法。</p>
+<h3 id="final类"><a href="#final类" class="headerlink" title="final类"></a>final类</h3><p>&#160; &#160; &#160; &#160;final类不能使用子类，比如Math类就是。保证不能被继承。</p>
+<h2 id="抽象"><a href="#抽象" class="headerlink" title="抽象"></a>抽象</h2><p>&#160; &#160; &#160; &#160;当编写一个类时候，常常会给类定义一些方法，比如形状类Shape，应该提供一个计算周长的方法，但是Shape类型不同计算周长方式不同，这时我们可以使用抽象方法，只有方法签名，没有方法实现。</p>
+<h3 id="抽象类和抽象方法"><a href="#抽象类和抽象方法" class="headerlink" title="抽象类和抽象方法"></a>抽象类和抽象方法</h3><ol>
+<li>都必须使用abstract修饰符来定义，有抽象方法的类只能被定义为抽象类，抽象方法不能有方法体。</li>
+<li>抽象类不能被实例化，<font color="red">无法使用new来调用构造器实例对象，即使不包含抽象方法。</font></li>
+<li>抽象类可以包含成员变量、方法、构造器、初始化块、内部类5个成分。主要作用是被其子类调用。</li>
+<li>含有抽象方法的类：包括直接定义来一个抽象方法，继承一个抽象父类，但没有完全实现父类包含的抽象方法，或者实现了一个接口但没有完全实现接口包含的抽象方法这三种情况）只能被定义为抽象类。</li>
+<li>不能用来修饰成员变量、局部变量、构造器。</li>
+<li>static和abstract不同时修饰一个方法，即没有所谓的类静态抽象方法。但也不是绝对互斥，它们可以修饰内部类。</li>
+<li>private和abstract不同时修饰方法。</li>
+</ol>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>&#160; &#160; &#160; &#160;在Java8中对接口进行了改进，允许接口中定义默认方法，默认方法可以提供方法实现。默认方法必须使用default修饰，且不能被static修饰。</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>&#160; &#160; &#160; &#160;接口是从多个相似类中抽象出来的规范，规范了它实现类的基本行为规范。接口使用interface关键字。仿佛默认使用public修饰。</p>
+<p>&#160; &#160; &#160; &#160;Java8中允许接口中定义类方法，必须使用statci修饰，该方法可以使用接口来调用。</p>
+<p>&#160; &#160; &#160; &#160;接口成员默认使用public static final修饰。</p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ol>
+<li>接口支持多继承；</li>
+<li>接口不能创建实例；</li>
+<li>接口的实现类 implents；实现类可实现多个接口。</li>
+</ol>
+<h2 id="抽象和接口的比较"><a href="#抽象和接口的比较" class="headerlink" title="抽象和接口的比较"></a>抽象和接口的比较</h2><p>&#160; &#160; &#160; &#160;一般接口来控制行为规范，抽象类用来定型。当你关注一个事物的本质的时候，用抽象类；当你关注一个操作的时候，用接口。</p>
+<p>参考这篇博客：<a href="http://www.cnblogs.com/yongjiapei/p/5494894.html" target="_blank" rel="noopener">抽象和接口的区别</a>。</p>
+<h2 id="面向接口编程"><a href="#面向接口编程" class="headerlink" title="面向接口编程"></a>面向接口编程</h2><h3 id="实现简单工厂模式"><a href="#实现简单工厂模式" class="headerlink" title="实现简单工厂模式"></a>实现简单工厂模式</h3><p><a href="http://www.cnblogs.com/toutou/p/4899388.html" target="_blank" rel="noopener">详解工厂模式三种类型</a></p>
+<h3 id="实现命令模式"><a href="#实现命令模式" class="headerlink" title="实现命令模式"></a>实现命令模式</h3><p><a href="http://blog.csdn.net/jason0539/article/details/45110355" target="_blank" rel="noopener">Java命令模式实现</a></p>
+<h2 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h2><h3 id="非静态内部类"><a href="#非静态内部类" class="headerlink" title="非静态内部类"></a>非静态内部类</h3><ol>
+<li>非静态内部类可以访问外部private成员。</li>
+<li>优先在局部变量中寻找。</li>
+<li>外部不能访问非静态内部类的private成员。</li>
+<li>非静态内部类中不能定义静态成员。</li>
+</ol>
+<h3 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h3><ol>
+<li>静态内部类中可以包含静态、非静态成员都可以。</li>
+<li>静态类不能访问外部成员，只能是访问静态成员。</li>
+<li>静态内部类是外部类的一个静态成员，因此外部类的所有成员可以使用静态内部类来定义，创建对象，但是不能直接访问静态内部类的成员。</li>
+<li>接口中也能定义内部类，接口中只能是静态内部类，默认使用public static。</li>
+</ol>
+<h2 id="内部类的使用"><a href="#内部类的使用" class="headerlink" title="内部类的使用"></a>内部类的使用</h2><ol>
+<li>外部类内部使用内部类：和普通类没有太大区别，唯一区别是：不要在外部类中的静态成员中使用非静态的内部类。</li>
+<li>在外部类以外使用非静态内部类：如果希望被访问，不能使用private。</li>
+<li>外部类以外访问静态内部类，无须实例外部类。</li>
+<li>局部内部类，在方法里，只能在方法内使用。</li>
+</ol>
+<h2 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h2><p>&#160; &#160; &#160; &#160;适合创建那种只需要一次使用的类，类如命令模式中的command对象。匿名内部类必须继承一个父类或实现一个接口，但最多继承一个父类或实现一个接口。不允许为抽象类，不能定义构造器，因为没有类名，但可以定义初始化块来完成构造器要完成的事情。</p>
+<p>&#160; &#160; &#160; &#160;在Java8之前，Java要求局部内部类、匿名内部类访问的局部变量必须使用final修饰，从Java8开始这个限制被取消了，Java8更加智能，自动添加final。</p>
+<p>&#160; &#160; &#160; &#160;参考这篇博客：<a href="http://www.cnblogs.com/nerxious/archive/2013/01/25/2876489.html" target="_blank" rel="noopener">匿名内部类总结</a></p>
+<h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2><p>&#160; &#160; &#160; &#160;允许用更简单的代码来创建只有一个抽象方法的接口，即函数式接口。lambda表达式完全可用于简化创建匿名内部类对象。</p>
+<p>&#160; &#160; &#160; &#160;参考这篇博客：<a href="http://www.cnblogs.com/franson-2016/p/5593080.html" target="_blank" rel="noopener">lambda表达式总结</a></p>
+<h2 id="枚举类"><a href="#枚举类" class="headerlink" title="枚举类"></a>枚举类</h2><p>&#160; &#160; &#160; &#160;早期会用简单的静态变量来表示枚举，但是类型不安全，没有命名空间，意义不明确，后来用类来封装，但是额外要写代码，JDK1.5之后增加了对枚举类的支持。enum。</p>
+<p>&#160; &#160; &#160; &#160;参考这篇博客：<a href="http://www.cnblogs.com/oumyye/p/4232532.html" target="_blank" rel="noopener">lambda表达式总结</a></p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>　　文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！！！</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">面向对象特性</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/Java基础//" class="article-tag-list-link color2">Java基础</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2017/02/10/Java基础之面向对象（二）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2017/02/13/MySQL学习笔记整理（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL学习笔记整理（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2017/02/08/Java基础之面向对象（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java基础之面向对象（一）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +419,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

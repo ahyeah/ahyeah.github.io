@@ -6,14 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>实现简易web服务器和web浏览器 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="web服务器和web浏览器的实现原理前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;预警：此篇篇幅很长，可通过菜单导航观看。最近在复习计算机网络的知识，因为想在Java web方面深入了解，所以在思考B／S结构模式的工作是怎样的过程呢，刚好找了好些资料和别人的总结，现在把这些都整理一下。在基础中已经学习了socket和http协议，我们也知道通过浏览器输入一个地址，访问一个网页的操作。实">
+<meta name="keywords" content="网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现简易web服务器和web浏览器">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2017/04/02/web服务器和web浏览器的实现原理/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="web服务器和web浏览器的实现原理前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;预警：此篇篇幅很长，可通过菜单导航观看。最近在复习计算机网络的知识，因为想在Java web方面深入了解，所以在思考B／S结构模式的工作是怎样的过程呢，刚好找了好些资料和别人的总结，现在把这些都整理一下。在基础中已经学习了socket和http协议，我们也知道通过浏览器输入一个地址，访问一个网页的操作。实">
+<meta property="og:image" content="http://opb7t58xj.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-10%20%E4%B8%8B%E5%8D%883.39.20.png">
+<meta property="og:updated_time" content="2017-07-26T11:46:22.785Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="实现简易web服务器和web浏览器">
+<meta name="twitter:description" content="web服务器和web浏览器的实现原理前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;预警：此篇篇幅很长，可通过菜单导航观看。最近在复习计算机网络的知识，因为想在Java web方面深入了解，所以在思考B／S结构模式的工作是怎样的过程呢，刚好找了好些资料和别人的总结，现在把这些都整理一下。在基础中已经学习了socket和http协议，我们也知道通过浏览器输入一个地址，访问一个网页的操作。实">
+<meta name="twitter:image" content="http://opb7t58xj.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-10%20%E4%B8%8B%E5%8D%883.39.20.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,357 +156,109 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-web服务器和web浏览器的实现原理" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
+    <h1 class="article-title" itemprop="name">
+      实现简易web服务器和web浏览器
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
+        
+        <a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
   	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="web服务器和web浏览器的实现原理"><a href="#web服务器和web浏览器的实现原理" class="headerlink" title="web服务器和web浏览器的实现原理"></a>web服务器和web浏览器的实现原理</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;预警：此篇篇幅很长，可通过菜单导航观看。最近在复习计算机网络的知识，因为想在Java web方面深入了解，所以在思考B／S结构模式的工作是怎样的过程呢，刚好找了好些资料和别人的总结，现在把这些都整理一下。在基础中已经学习了socket和http协议，我们也知道通过浏览器输入一个地址，访问一个网页的操作。实际对应的底层操作简单来说就是：客户端(浏览器)面向于WEB服务器的网络通信。</p>
+ <a id="more"></a>
+<p>&#160; &#160; &#160; &#160;那么，既然是网络通信。对应于Java当中来说，就自然离不开Socket与IO流。其实这也正是Web服务器与浏览器的基础实现原理。当然，想要开发一套完善的WEB服务器或浏览器，需要做的工作是很复杂的，要考虑多线程、并发、io流、网络等等。但我们想要了解的只是其原理。后面将对使用较多的servlet和tomcat在进行分析，达到一个比较深入的理解。本篇在此博客基础上进一步整理：<a href="http://blog.csdn.net/ghost_programmer/article/details/43446531" target="_blank" rel="noopener">浅析web服务器与浏览器的实现原理</a>。</p>
+<h2 id="原理概述"><a href="#原理概述" class="headerlink" title="原理概述"></a>原理概述</h2><p>&#160; &#160; &#160; &#160;我们知道，将开发的web项目部署到tomcat服务器之后，就可以通过浏览器对服务器上的资源进行访问。但重要的一点是，存在多种不同厂商开发的不同浏览器。但各个类型的WEB浏览器，都可以正常的访问tomcat服务器上的资源。对此，我们可以这样理解：我开发了一个WEB服务器，并且能够保证其他人开发的客户端都能够与我的服务器正常通信。</p>
+<p>&#160; &#160; &#160; &#160;能够实现这样的目的的前提自然就是，你要制定一个规范，并让想要与你开发的服务器正常进行通信的客户端都遵循这个规范来实现。这个规范，也就是所谓的协议。</p>
+<p>&#160; &#160; &#160; &#160;正如在网络通信中，数据的传输可以遵循TCP/IP或UDP协议一样。WEB服务器与WEB浏览器之间，也通过一种双方都熟悉的语言进行通信。这种协议即是：超文本传输协议，也就是HTTP协议。不同的是，TCP/IP与UDP议是传输层当中的通信协议，而HTTP协议是应用层当中的协议。</p>
+<p>&#160; &#160; &#160; &#160;当我们想要使用Java语言实现所谓的WEB通信，自然也应当遵循HTTP协议。Java中已经为我们提供了这样的一种实现规范，也就是广为人知的：Servlet接口。而我们开发web项目时,最常用到的HttpServlet类，就是基于此接口实现的具体子类。该类封装和提供了，针对基于Http协议通信的内容进行访问和操作的常用方法。</p>
+<h2 id="Servlet实例"><a href="#Servlet实例" class="headerlink" title="Servlet实例"></a>Servlet实例</h2><p>&#160; &#160; &#160; &#160;首先，我们通过一段简单的Servlet代码来看一下，基于HTTP协议进行WEB通信的请求信息。我的环境是os x+idea+tomcat7，项目工程我放在github上，链接传送门：<a href="https://github.com/wustzoujing/MyBrowerAndMyTomcat" target="_blank" rel="noopener">wustzoujing/MyBrowerAndMyTomcat</a>。</p>
+<p>&#160; &#160; &#160; &#160;首先要了解servlet，这个基础没有的话，可以参考这个入门教程<a href="http://www.runoob.com/servlet/servlet-tutorial.html" target="_blank" rel="noopener">servlet教程</a>。从helloworld开始做。这里我们基于HttpServlet+Tomcat，先建立一个web的项目，再写servlet测试类，然后配置web.xml，最后用tomcat发布。</p>
+<p>&#160; &#160; &#160; &#160;这里贴上一些代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import javax.servlet.http.*;</span><br><span class="line">import javax.servlet.*;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.Enumeration;</span><br><span class="line">/**</span><br><span class="line"> * Created by zoujing on 2017/5/10.</span><br><span class="line"> */</span><br><span class="line">public class ServeletTest extends HttpServlet &#123;</span><br><span class="line">    public void doGet(HttpServletRequest request, HttpServletResponse response)</span><br><span class="line">            throws ServletException, IOException &#123;</span><br><span class="line">        for (Enumeration e = request.getHeaderNames(); e.hasMoreElements();) &#123;</span><br><span class="line">            String header = (String) e.nextElement();</span><br><span class="line">            if (header != null)</span><br><span class="line">                System.out.println((new StringBuilder(String.valueOf(header)))</span><br><span class="line">                        .append(&quot;:&quot;).append(request.getHeader(header))</span><br><span class="line">                        .toString());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void doPost(HttpServletRequest request, HttpServletResponse response)</span><br><span class="line">            throws ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;接下来是web.xml的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;</span><br><span class="line">           xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">           xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee</span><br><span class="line">		  http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd&quot;</span><br><span class="line">           version=&quot;3.0&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;servlet&gt;</span><br><span class="line">        &lt;servlet-name&gt;TomcatWeb&lt;/servlet-name&gt;</span><br><span class="line">        &lt;servlet-class&gt;ServeletTest&lt;/servlet-class&gt;</span><br><span class="line">    &lt;/servlet&gt;</span><br><span class="line"></span><br><span class="line">    &lt;servlet-mapping&gt;</span><br><span class="line">        &lt;servlet-name&gt;TomcatWeb&lt;/servlet-name&gt;</span><br><span class="line">        &lt;url-pattern&gt;/servlet/HttpServletDemo&lt;/url-pattern&gt;</span><br><span class="line">    &lt;/servlet-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;当我们在浏览器输入链接<a href="http://localhost:8080/servlet/HttpServletDemo的时候，会打印出下面信息：" target="_blank" rel="noopener">http://localhost:8080/servlet/HttpServletDemo的时候，会打印出下面信息：</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">host:localhost:8080</span><br><span class="line">accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">upgrade-insecure-requests:1</span><br><span class="line">cookie:JSESSIONID=92E7AE4F85499378342793886884D0C0; _ga=GA1.1.1073505442.1486722778</span><br><span class="line">user-agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.1 Safari/603.1.30</span><br><span class="line">accept-language:zh-cn</span><br><span class="line">accept-encoding:gzip, deflate</span><br><span class="line">connection:keep-alive</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;在计算机网络的学习中我们就知道了，这是http请求报文的内容，我们这里再回忆一下：一个HTTP协议的请求中，通常主要包含三个部分：</p>
+<ol>
+<li>方法/统一资源标示符(URI)/协议/版本 </li>
+<li>请求标头</li>
+<li>实体主体</li>
+</ol>
+<p>&#160; &#160; &#160; &#160;其中方法也就是所谓的get/post之类的请求方法，统一资源标示符也就是要访问的目标资源的路径，包括协议及协议版本，这些信息被放在请求的第一行。</p>
+<p>&#160; &#160; &#160; &#160;随后，紧接着的便是请求标头；请求标头通常包含了与客户端环境及请求实体主体相关的有用信息。</p>
+<p>&#160; &#160; &#160; &#160;最后，在标头与实体主体之间是一个空行。它对于HTTP请求格式是很重要的，空行告诉HTTP服务器，实体主体从这里开始。</p>
+<h2 id="实现最简易的Tomcat"><a href="#实现最简易的Tomcat" class="headerlink" title="实现最简易的Tomcat"></a>实现最简易的Tomcat</h2><p>&#160; &#160; &#160; &#160;前面已经说过了，我们这里想要研究的，是WEB服务器的基本实现原理。那么我们自然想要自己来实现一下所谓的WEB服务器，我们已经知道了：所谓的B/S结构，实际上就是客户端与服务器之间基于HTTP协议的网络通信。那么，肯定是离不开socket与io的，所以我们可以简单的模拟一个最简易功能的web服务器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.net.ServerSocket;</span><br><span class="line">import java.net.Socket;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by zoujing on 2017/5/10.</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">public class MyTomcat &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            ServerSocket tomcat = new ServerSocket(9090);</span><br><span class="line">            System.out.println(&quot;服务器启动&quot;);</span><br><span class="line">            //</span><br><span class="line">            Socket s = tomcat.accept();</span><br><span class="line">            //</span><br><span class="line">            byte[] buf = new byte[1024];</span><br><span class="line">            InputStream in = s.getInputStream();</span><br><span class="line">            //</span><br><span class="line">            int length = in.read(buf);</span><br><span class="line">            String request = new String(buf,0,length);</span><br><span class="line">            //</span><br><span class="line">            System.out.println(request);</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line"></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="demo中所需理论"><a href="#demo中所需理论" class="headerlink" title="demo中所需理论"></a>demo中所需理论</h3><p>&#160; &#160; &#160; &#160;demo中我们用到了ServerSocket和Socket，这也是Java网络编程中必须知道的，分别使用与服务器端和客户端。下面我们看下区别：</p>
+<h4 id="serverSocket类"><a href="#serverSocket类" class="headerlink" title="serverSocket类"></a>serverSocket类</h4><p>&#160; &#160; &#160; &#160;创建一个ServerSocket类，同时在运行该语句的计算机的指定端口处建立一个监听服务，如：上面的ServerSocket tomcat = new ServerSocket(9090);这里指定提供监听服务的端口是9090，一台计算机可以同时提供多个服务，这些不同的服务之间通过端口号来区别，不同的端口号上提供不同的服务。</p>
+<p>&#160; &#160; &#160; &#160;为了随时监听可能的Client请求，执行如下的语句：Socket s = tomcat.accept();该语句调用了ServerSocket对象的accept()方法，这个方法的执行将使Server端的程序处于等待状态，程序将一直阻塞直到捕捉到一个来自Client端的请求，并返回一个用于与该Client通信的Socket对象Link-Socket。此后Server程序只要向这个Socket对象读写数据，就可以实现向远端的Client读写数据。结束监听时，关闭ServerSocket对象：如tomcat.close()；</p>
+<h4 id="Socket类"><a href="#Socket类" class="headerlink" title="Socket类"></a>Socket类</h4><p>&#160; &#160; &#160; &#160;当Client程序需要从Server端获取信息及其他服务时，应创建一个Socket对象：Socket MySocket=new Socket(“ServerComputerName”，600)；</p>
+<p>&#160; &#160; &#160; &#160;Socket类的构造函数有两个参数，第一个参数是欲连接到的Server计算机的主机地址，第二个参数是该Server机上提供服务的端口号。Socket对象建立成功之后，就可以在Client和Server之间建立一个连接，并通过这个连接在两个端点之间传递数据。利用Socket类的方法getOutputStream()和getInputStream()分别获得向Socket读写数据的输入／输出流，最后将从Server端读取的数据重新返还到Server端。</p>
+<p>&#160; &#160; &#160; &#160;当Server和Client端的通信结束时，可以调用Socket类的close()方法关闭Socket，拆除连接。ServerSocket 一般仅用于设置端口号和监听，真正进行通信的是服务器端的Socket与客户端的Socket，在ServerSocket 进行accept之后，就将主动权转让了。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>&#160; &#160; &#160; &#160;服务器端程序设计：</p>
+<p>&#160; &#160; &#160; &#160;在服务器端，利用ServerSocket类的构造函数ServerSocket(int port)创建一个ServerSocket类的对象，port参数传递端口，这个端口就是服务器监听连接请求的端口，如果在这时出现错误将抛出IOException异常对象，否则将创建ServerSocket对象并开始准备接收连接请求。</p>
+<p>&#160; &#160; &#160; &#160;服务程序从调用ServerSocket的accept()方法开始，直到连接建立。在建立连接后，accept()返回一个最近创建的Socket对象，该Socket对象绑定了客户程序的IP地址或端口号。</p>
+<p>&#160; &#160; &#160; &#160;客户端程序设计：</p>
+<p>&#160; &#160; &#160; &#160;当客户程序需要与服务器程序通信时，需在客户机创建一个Socket对象。Socket类有构造函数Socket(InetAddress addr，int port)和Socket(String host，intport)，两个构造函数都创建了一个基于Socket的连接服务器端流套接字的流套接字。对于第一个InetAd-dress子类对象通过addr参数获得服务器主机的IP地址，对于第二个函数host参数包被分配到InetAddress对象中，如果没有IP地址与host参数相一致，那么将抛出UnknownHostException异常对象。两个函数都通过参数port获得服务器的端口号。假设已经建立连接了，网络API将在客户端基于Socket的流套接字中捆绑客户程序的IP地址和任意一个端口号，否则两个函数都会抛出一个IOException对象。</p>
+<p>&#160; &#160; &#160; &#160;如果创建了一个Socket对象，那么它可通过get-InputStream()方法从服务程序获得输入流读传送来的信息，也可通过调用getOutputStream()方法获得输出流来发送消息。在读写活动完成之后，客户程序调用close()方法关闭流和流套接字。</p>
+<h3 id="分析demo"><a href="#分析demo" class="headerlink" title="分析demo"></a>分析demo</h3><p>&#160; &#160; &#160; &#160;在demo中，我们开启一个服务器socket来监听9090端口，所以我们在通过在浏览器中输入<a href="http://localhost:9090，进行访问，经过我们demo可以得到的输出结果如下：" target="_blank" rel="noopener">http://localhost:9090，进行访问，经过我们demo可以得到的输出结果如下：</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">服务器启动</span><br><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: localhost:9090</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Cookie: JSESSIONID=92E7AE4F85499378342793886884D0C0; _ga=GA1.1.1073505442.1486722778</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.1 Safari/603.1.30</span><br><span class="line">Accept-Language: zh-cn</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: keep-alive</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;通过成果我们看到，我们已经成功的实现了最简易的tomcat。不过这里需要注意的是，我们自己山寨的tomcat服务器当中，之所以也成功的输出了Http协议的请求体，是因为：我们是通过web浏览器进行访问的，如果通过普通的socket进行对serversocket的连接访问，是没有这些请求信息的。因为我们前面已经说过了，web浏览器与服务器之间的通信必须遵循Http协议。</p>
+<h2 id="实现简易浏览器"><a href="#实现简易浏览器" class="headerlink" title="实现简易浏览器"></a>实现简易浏览器</h2><p>&#160; &#160; &#160; &#160;通过前面的学习，我相信我们现在更想把浏览器功能也实现，剖析一下，接下来我们就试试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.io.PrintWriter;</span><br><span class="line">import java.net.Socket;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by zoujing on 2017/5/10.</span><br><span class="line"> */</span><br><span class="line">public class MyBrower &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Socket browser = new Socket(&quot;127.0.0.1&quot;, 9090);</span><br><span class="line">            PrintWriter pw = new PrintWriter(browser.getOutputStream(),true);</span><br><span class="line">            // 封装请求第一行</span><br><span class="line">            pw.println(&quot;GET/ HTTP/1.1&quot;);</span><br><span class="line">            // 封装请求头</span><br><span class="line">            pw.println(&quot;User-Agent: Java/1.8.0_131&quot;);</span><br><span class="line">            pw.println(&quot;Host: 127.0.0.1:9090&quot;);</span><br><span class="line">            pw.println(&quot;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&quot;);</span><br><span class="line">            pw.println(&quot;Connection: keep-alive&quot;);</span><br><span class="line">            // 空行</span><br><span class="line">            pw.println();</span><br><span class="line">            // 封装实体主体</span><br><span class="line">            pw.println(&quot;UserName=JessieZou&amp;Age=22&quot;);</span><br><span class="line">            // 写入完毕</span><br><span class="line">            browser.shutdownOutput();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            // 接受服务器返回信息，</span><br><span class="line">            InputStream in = browser.getInputStream();</span><br><span class="line">            //</span><br><span class="line">            int length = 0;</span><br><span class="line">            StringBuffer request = new StringBuffer();</span><br><span class="line">            byte[] buf = new byte[1024];</span><br><span class="line">            //</span><br><span class="line">            while ((length = in.read(buf)) != -1) &#123;</span><br><span class="line">                String line = new String(buf, 0, length);</span><br><span class="line">                request.append(line);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(request);</span><br><span class="line">            //browser.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            System.out.println(&quot;亲，出现了异常哦!&quot;);</span><br><span class="line">        &#125;finally&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;同时改进我们的tomcat如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.io.PrintWriter;</span><br><span class="line">import java.net.ServerSocket;</span><br><span class="line">import java.net.Socket;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by zoujing on 2017/5/10.</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">public class MyTomcat &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            ServerSocket tomcat = new ServerSocket(9090);</span><br><span class="line">            System.out.println(&quot;服务器启动&quot;);</span><br><span class="line">            //</span><br><span class="line">            Socket s = tomcat.accept();</span><br><span class="line">            //</span><br><span class="line">            byte[] buf = new byte[1024];</span><br><span class="line">            InputStream in = s.getInputStream();</span><br><span class="line">            //</span><br><span class="line"></span><br><span class="line">            int length = 0;</span><br><span class="line">            StringBuffer request = new StringBuffer();</span><br><span class="line">            while ((length = in.read(buf)) != -1) &#123;</span><br><span class="line">                String line = new String(buf, 0, length);</span><br><span class="line">                request.append(line);</span><br><span class="line">            &#125;</span><br><span class="line">            //</span><br><span class="line">            System.out.println(&quot;request:&quot;+request);</span><br><span class="line"></span><br><span class="line">            PrintWriter pw = new PrintWriter(s.getOutputStream(),true);</span><br><span class="line">            pw.println(&quot;&lt;html&gt;&quot;);</span><br><span class="line">            pw.println(&quot;&lt;head&gt;&quot;);</span><br><span class="line">            pw.println(&quot;&lt;title&gt;LiveSession List&lt;/title&gt;&quot;);</span><br><span class="line">            pw.println(&quot;&lt;/head&gt;&quot;);</span><br><span class="line">            pw.println(&quot;&lt;body&gt;&quot;);</span><br><span class="line">            pw.println(&quot;&lt;p style=\&quot;font-weight: bold;color: red;\&quot;&gt;welcome to MyTomcat&lt;/p&gt;&quot;);</span><br><span class="line">            pw.println(&quot;&lt;/body&gt;&quot;);</span><br><span class="line">            s.close();</span><br><span class="line">            tomcat.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            // TODO Auto-generated catch block</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h3><p>&#160; &#160; &#160; &#160;响应行和响应标头当中，实际上是负责将相关的一些有用信息返回给我们，但这部分是不需要在浏览器中所展示的。也就是说，我们的浏览器除了应当具备获取一个完整的HTTP响应的能力之外，还应该具备解析HTTP协议响应的能力。事实上，Java也为我们提供了这样的对象，那就是URL及URLConnection对象。</p>
+<p>如果我们在我们的浏览器中，植入这样的对象，来进行与服务器之间的HTTP通信，那么：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.net.HttpURLConnection;</span><br><span class="line">import java.net.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by zoujing on 2017/5/10.</span><br><span class="line"> */</span><br><span class="line">public class MyBrowser2 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            URL url = new URL(&quot;http://localhost:9090&quot;);</span><br><span class="line">            HttpURLConnection conn = (HttpURLConnection) url.openConnection();</span><br><span class="line"></span><br><span class="line">            InputStream in = conn.getInputStream();</span><br><span class="line">            byte[] buf = new byte[1024];</span><br><span class="line">            int length = 0;</span><br><span class="line">            StringBuffer text = new StringBuffer();</span><br><span class="line">            String line = null;</span><br><span class="line">            while ((length = in.read(buf)) != -1) &#123;</span><br><span class="line">                line = new String(buf, 0, length);</span><br><span class="line">                text.append(line);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println(text);</span><br><span class="line"></span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            // TODO Auto-generated catch block</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&#160; &#160; &#160; &#160;这次当我们再运行程序，查看输出信息，发现我们从URLConnection对象获取到的输入流当中，读取的响应信息，就如我们所愿的，只剩下了需要被解析显示在页面的响应实体的内容。实际上这也就是Java为我们提供的对象，将对HTTP协议内容的解析功能进行了封装。而究其根本来说，我们基本可以想象到，URLConnection = Socket + HTTP协议解析器。也就是说，该对象的底层除了通过Socket连接到WEB服务器之外，还封装了对HTTP协议内容的解析功能。</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>&#160; &#160; &#160; &#160;我们先启动服务器，然后运行浏览器模拟网页浏览的过程，首先看到服务器端收到的请求信息，打印出来的信息和上面类似，我们这里就是把请求报文显示出来。</p>
+<p>&#160; &#160; &#160; &#160;紧接着，服务器收到请求进行处理后，返回资源给浏览器，于是得到输出信息，在改进后的tomcat服务器，我们封装了html，不过是静态的。如果在搭配html解析，就可以像我们浏览器一样，能先到解析的页面。</p>
+<p><img src="http://opb7t58xj.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-10%20%E4%B8%8B%E5%8D%883.39.20.png" alt=""></p>
+<p>　　现在我们是单线程单连接，而且没有前段操作界面的实现，我们真正使用的tomcat和浏览器当然在多线程并发、io、网络、人性化操作等方面也做了大量工作进行效率优化和简化操作，美化界面。我们通过例子是去了解基本底层原理。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>　　文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！！！</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -511,7 +270,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -524,118 +283,112 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2017/04/02/web服务器和web浏览器的实现原理/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          JDK源码阅读（二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JDK源码阅读（一）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +412,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

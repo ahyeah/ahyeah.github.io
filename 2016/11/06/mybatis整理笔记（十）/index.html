@@ -6,14 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ahyeah.github.io/wust_djc.github.io/.">
-  <title>Archives | Hexo</title>
+  <title>mybatis整理笔记（十） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./archives/index.html">
+  <meta name="description" content="前言本文对接下来几篇博客中用到的数据模型进行分析，并附上建表sql文件和测试数据文件">
+<meta name="keywords" content="动态sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mybatis整理笔记（十）">
+<meta property="og:url" content="https://ahyeah.github.io/wust_djc.github.io/./2016/11/06/mybatis整理笔记（十）/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本文对接下来几篇博客中用到的数据模型进行分析，并附上建表sql文件和测试数据文件">
+<meta property="og:image" content="http://7xph6d.com1.z0.glb.clouddn.com/mybatis_%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90.png">
+<meta property="og:updated_time" content="2017-08-27T09:20:33.609Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="mybatis整理笔记（十）">
+<meta name="twitter:description" content="前言本文对接下来几篇博客中用到的数据模型进行分析，并附上建表sql文件和测试数据文件">
+<meta name="twitter:image" content="http://7xph6d.com1.z0.glb.clouddn.com/mybatis_%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -149,493 +156,233 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-mybatis整理笔记（十）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mybatis整理笔记（十）
+    </h1>
+  
+
+        
+        <a href="/wust_djc.github.io/2016/11/06/mybatis整理笔记（十）/" class="archive-article-date">
+  	<time datetime="2016-11-06T09:11:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-06</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文对接下来几篇博客中用到的数据模型进行分析，并附上建表sql文件和测试数据文件<br><a id="more"></a></p>
+<h2 id="数据模型分析思路"><a href="#数据模型分析思路" class="headerlink" title="数据模型分析思路"></a>数据模型分析思路</h2><ul>
+<li>每张表记录的数据内容</li>
+</ul>
+<p>分模块对每张表记录的内容进行熟悉，相当于你学习系统需求（功能）的过程。</p>
+<ul>
+<li>每张表重要的字段设置</li>
+</ul>
+<p>非空字段、外键字段</p>
+<ul>
+<li>数据库级别表与表之间的关系</li>
+</ul>
+<p>外键关系</p>
+<ul>
+<li>表与表之间的业务关系</li>
+</ul>
+<p>在分析表与表之间的业务关系时一定要建立在某个业务意义基础上去分析。</p>
+<h2 id="数据模型分析"><a href="#数据模型分析" class="headerlink" title="数据模型分析"></a>数据模型分析</h2><p><img src="http://7xph6d.com1.z0.glb.clouddn.com/mybatis_%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90.png" alt="数据模型分析"></p>
+<ul>
+<li>用户表user：记录了购买商品的用户信息</li>
+<li>订单表orders：记录了用户所创建的订单（购买商品的订单）</li>
+<li>订单明细表orderdetail：记录了订单的详细信息即购买商品的信息</li>
+<li>商品表items：记录了商品信息</li>
+</ul>
+<p>表与表之间的业务关系：</p>
+<p>在分析表与表之间的业务关系时需要建立在某个业务意义基础上去分析。先分析数据级别之间有关系的表之间的业务关系：</p>
+<ul>
+<li>usre和orders：</li>
+</ul>
+<p>user—&gt;orders：一个用户可以创建多个订单，一对多<br>orders—&gt;user：一个订单只由一个用户创建，一对一</p>
+<ul>
+<li>orders和orderdetail：</li>
+</ul>
+<p>orders—&gt;orderdetail：一个订单可以包括多个订单明细，因为一个订单可以购买多个商品，每个商品的购买信息在orderdetail记录，一对多关系</p>
+<p>orderdetail—&gt; orders：一个订单明细只能包括在一个订单中，一对一</p>
+<ul>
+<li>orderdetail和itesm：</li>
+</ul>
+<p>orderdetail—&gt;itesms：一个订单明细只对应一个商品信息，一对一</p>
+<p>items—&gt; orderdetail:一个商品可以包括在多个订单明细 ，一对多</p>
+<p>再分析数据库级别没有关系的表之间是否有业务关系：</p>
+<ul>
+<li>orders和items：</li>
+</ul>
+<p>orders和items之间可以通过orderdetail表建立关系。</p>
+<h2 id="订单商品数据模型建表sql"><a href="#订单商品数据模型建表sql" class="headerlink" title="订单商品数据模型建表sql"></a>订单商品数据模型建表sql</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">SQLyog v10.2 </span></span><br><span class="line"><span class="comment">MySQL - 5.1.72-community : Database - mybatis</span></span><br><span class="line"><span class="comment">*********************************************************************</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET NAMES utf8 */</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET SQL_MODE=''*/</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */</span>;</span><br><span class="line"><span class="comment">/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */</span>;</span><br><span class="line"><span class="comment">/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */</span>;</span><br><span class="line"><span class="comment">/*Table structure for table `items` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`items`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品名称'</span>,</span><br><span class="line">  <span class="string">`price`</span> <span class="built_in">float</span>(<span class="number">10</span>,<span class="number">1</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品定价'</span>,</span><br><span class="line">  <span class="string">`detail`</span> <span class="built_in">text</span> <span class="keyword">COMMENT</span> <span class="string">'商品描述'</span>,</span><br><span class="line">  <span class="string">`pic`</span> <span class="built_in">varchar</span>(<span class="number">64</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品图片'</span>,</span><br><span class="line">  <span class="string">`createtime`</span> datetime <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'生产日期'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">4</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Table structure for table `orderdetail` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`orderdetail`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`orders_id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'订单id'</span>,</span><br><span class="line">  <span class="string">`items_id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品id'</span>,</span><br><span class="line">  <span class="string">`items_num`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品购买数量'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`FK_orderdetail_1`</span> (<span class="string">`orders_id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`FK_orderdetail_2`</span> (<span class="string">`items_id`</span>),</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`FK_orderdetail_1`</span> FOREIGN <span class="keyword">KEY</span> (<span class="string">`orders_id`</span>) <span class="keyword">REFERENCES</span> <span class="string">`orders`</span> (<span class="string">`id`</span>) <span class="keyword">ON</span> <span class="keyword">DELETE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span>,</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`FK_orderdetail_2`</span> FOREIGN <span class="keyword">KEY</span> (<span class="string">`items_id`</span>) <span class="keyword">REFERENCES</span> <span class="string">`items`</span> (<span class="string">`id`</span>) <span class="keyword">ON</span> <span class="keyword">DELETE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">5</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Table structure for table `orders` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`orders`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`user_id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'下单用户id'</span>,</span><br><span class="line">  <span class="string">`number`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'订单号'</span>,</span><br><span class="line">  <span class="string">`createtime`</span> datetime <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建订单时间'</span>,</span><br><span class="line">  <span class="string">`note`</span> <span class="built_in">varchar</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'备注'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`FK_orders_1`</span> (<span class="string">`user_id`</span>),</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`FK_orders_id`</span> FOREIGN <span class="keyword">KEY</span> (<span class="string">`user_id`</span>) <span class="keyword">REFERENCES</span> <span class="string">`user`</span> (<span class="string">`id`</span>) <span class="keyword">ON</span> <span class="keyword">DELETE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">6</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Table structure for table `user` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'用户名称'</span>,</span><br><span class="line">  <span class="string">`birthday`</span> <span class="built_in">date</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'生日'</span>,</span><br><span class="line">  <span class="string">`sex`</span> <span class="built_in">char</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'性别'</span>,</span><br><span class="line">  <span class="string">`address`</span> <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'地址'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">27</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET SQL_MODE=@OLD_SQL_MODE */</span>;</span><br><span class="line"><span class="comment">/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */</span>;</span><br><span class="line"><span class="comment">/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */</span>;</span><br><span class="line"><span class="comment">/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */</span>;</span><br></pre></td></tr></table></figure>
+<p>测试数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">SQLyog v10.2 </span></span><br><span class="line"><span class="comment">MySQL - 5.1.72-community : Database - mybatis</span></span><br><span class="line"><span class="comment">*********************************************************************</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET NAMES utf8 */</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET SQL_MODE=''*/</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */</span>;</span><br><span class="line"><span class="comment">/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */</span>;</span><br><span class="line"><span class="comment">/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */</span>;</span><br><span class="line"><span class="comment">/*Data for the table `items` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span>  <span class="keyword">into</span> <span class="string">`items`</span>(<span class="string">`id`</span>,<span class="string">`name`</span>,<span class="string">`price`</span>,<span class="string">`detail`</span>,<span class="string">`pic`</span>,<span class="string">`createtime`</span>) <span class="keyword">values</span> (<span class="number">1</span>,<span class="string">'台式机'</span>,<span class="number">3000.0</span>,<span class="string">'该电脑质量非常好！！！！'</span>,<span class="literal">NULL</span>,<span class="string">'2015-02-03 13:22:53'</span>),(<span class="number">2</span>,<span class="string">'笔记本'</span>,<span class="number">6000.0</span>,<span class="string">'笔记本性能好，质量好！！！！！'</span>,<span class="literal">NULL</span>,<span class="string">'2015-02-09 13:22:57'</span>),(<span class="number">3</span>,<span class="string">'背包'</span>,<span class="number">200.0</span>,<span class="string">'名牌背包，容量大质量好！！！！'</span>,<span class="literal">NULL</span>,<span class="string">'2015-02-06 13:23:02'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Data for the table `orderdetail` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span>  <span class="keyword">into</span> <span class="string">`orderdetail`</span>(<span class="string">`id`</span>,<span class="string">`orders_id`</span>,<span class="string">`items_id`</span>,<span class="string">`items_num`</span>) <span class="keyword">values</span> (<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>),(<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>),(<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">4</span>),(<span class="number">4</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Data for the table `orders` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span>  <span class="keyword">into</span> <span class="string">`orders`</span>(<span class="string">`id`</span>,<span class="string">`user_id`</span>,<span class="string">`number`</span>,<span class="string">`createtime`</span>,<span class="string">`note`</span>) <span class="keyword">values</span> (<span class="number">3</span>,<span class="number">1</span>,<span class="string">'1000010'</span>,<span class="string">'2015-02-04 13:22:35'</span>,<span class="literal">NULL</span>),(<span class="number">4</span>,<span class="number">1</span>,<span class="string">'1000011'</span>,<span class="string">'2015-02-03 13:22:41'</span>,<span class="literal">NULL</span>),(<span class="number">5</span>,<span class="number">10</span>,<span class="string">'1000012'</span>,<span class="string">'2015-02-12 16:13:23'</span>,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*Data for the table `user` */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span>  <span class="keyword">into</span> <span class="string">`user`</span>(<span class="string">`id`</span>,<span class="string">`username`</span>,<span class="string">`birthday`</span>,<span class="string">`sex`</span>,<span class="string">`address`</span>) <span class="keyword">values</span> (<span class="number">1</span>,<span class="string">'王五'</span>,<span class="literal">NULL</span>,<span class="string">'2'</span>,<span class="literal">NULL</span>),(<span class="number">10</span>,<span class="string">'张三'</span>,<span class="string">'2014-07-10'</span>,<span class="string">'1'</span>,<span class="string">'北京市'</span>),(<span class="number">16</span>,<span class="string">'张小明'</span>,<span class="literal">NULL</span>,<span class="string">'1'</span>,<span class="string">'河南郑州'</span>),(<span class="number">22</span>,<span class="string">'陈小明'</span>,<span class="literal">NULL</span>,<span class="string">'1'</span>,<span class="string">'河南郑州'</span>),(<span class="number">24</span>,<span class="string">'张三丰'</span>,<span class="literal">NULL</span>,<span class="string">'1'</span>,<span class="string">'河南郑州'</span>),(<span class="number">25</span>,<span class="string">'陈小明'</span>,<span class="literal">NULL</span>,<span class="string">'1'</span>,<span class="string">'河南郑州'</span>),(<span class="number">26</span>,<span class="string">'王五'</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET SQL_MODE=@OLD_SQL_MODE */</span>;</span><br><span class="line"><span class="comment">/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */</span>;</span><br><span class="line"><span class="comment">/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */</span>;</span><br><span class="line"><span class="comment">/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */</span>;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/wust_djc.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:47:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（零）-概要/">手撕设计模式（零）-概要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">设计模式概要</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">动态sql</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/wust_djc.github.io/categories/mybatis//" class="article-tag-list-link color3">mybatis</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ahyeah.github.io/wust_djc.github.io/./2016/11/06/mybatis整理笔记（十）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/wust_djc.github.io/2016/11/07/mybatis整理笔记（十二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          mybatis整理笔记（十二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wust_djc.github.io/2016/11/06/mybatis整理笔记（九）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mybatis整理笔记（九）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/09/30/手撕设计模式（一）-普通工厂/">手撕设计模式（一）-普通工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" class="archive-article-date">
-  	<time datetime="2017-06-11T02:22:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/">工作流引擎及其可视化定制工具（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">自主开发的工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/工作流引擎//" class="article-tag-list-link color1">工作流引擎</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/" class="archive-article-date">
-  	<time datetime="2017-05-10T12:05:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/10/Redis笔记（二）/">Redis学习笔记（二）</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/" class="archive-article-date">
-  	<time datetime="2017-05-08T01:00:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/05/08/Redis笔记（一）/">Redis学习笔记（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">NoSql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Redis//" class="article-tag-list-link color1">Redis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/" class="archive-article-date">
-  	<time datetime="2017-04-05T08:23:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/05/JDK源码阅读（三）/">JDK源码阅读（三）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/" class="archive-article-date">
-  	<time datetime="2017-04-03T05:57:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/03/JDK源码阅读（二）/">JDK源码阅读（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JDK集合类源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/" class="archive-article-date">
-  	<time datetime="2017-04-02T04:31:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/02/web服务器和web浏览器的实现原理/">实现简易web服务器和web浏览器</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">网络编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/Java-Web//" class="article-tag-list-link color4">Java Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/wust_djc.github.io/2017/03/18/OOM异常实战/" class="archive-article-date">
-  	<time datetime="2017-03-18T08:27:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/wust_djc.github.io/2017/03/18/OOM异常实战/">OOM异常实战</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">OOM异常</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/wust_djc.github.io/categories/JVM进阶//" class="article-tag-list-link color1">JVM进阶</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/wust_djc.github.io/archives/page/2/">2</a><a class="page-number" href="/wust_djc.github.io/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/wust_djc.github.io/archives/page/7/">7</a><a class="extend next" rel="next" href="/wust_djc.github.io/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -659,8 +406,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

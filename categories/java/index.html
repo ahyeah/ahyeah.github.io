@@ -6,21 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="git@github.com:ahyeah/ahyeah.github.io.git">
-  <title>MySQL学习笔记整理（一） | 邓景昌的博客</title>
+  <title>Category: java | 邓景昌的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;数据库是后台开发重中之重的一个环节，了解当前各种类型的数据库，并在了解各种数据库设计原理的基础上，深入学习相关优化策略，加之以实战经验，才是长久的发展之计。之后对先对关系型数据库–mysql为例进行深入学习笔记记录，毕竟开源，而且也是世界顶级的数据库，然后对非关系型数据库NoSql进行学习，以Redis为例，这些都已经接触过了，之后将做一个">
-<meta name="keywords" content="mysql">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MySQL学习笔记整理（一）">
-<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2017/02/13/MySQL学习笔记整理（一）/index.html">
+  <meta name="description" content="武汉科技大学19级硕士">
+<meta property="og:type" content="website">
+<meta property="og:title" content="邓景昌的博客">
+<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/categories/java/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
-<meta property="og:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;数据库是后台开发重中之重的一个环节，了解当前各种类型的数据库，并在了解各种数据库设计原理的基础上，深入学习相关优化策略，加之以实战经验，才是长久的发展之计。之后对先对关系型数据库–mysql为例进行深入学习笔记记录，毕竟开源，而且也是世界顶级的数据库，然后对非关系型数据库NoSql进行学习，以Redis为例，这些都已经接触过了，之后将做一个">
-<meta property="og:image" content="http://img1.51cto.com/attachment/201308/111054362.png?_=3641983">
-<meta property="og:updated_time" content="2017-07-13T03:13:13.993Z">
+<meta property="og:description" content="武汉科技大学19级硕士">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL学习笔记整理（一）">
-<meta name="twitter:description" content="前言&amp;#160; &amp;#160; &amp;#160; &amp;#160;数据库是后台开发重中之重的一个环节，了解当前各种类型的数据库，并在了解各种数据库设计原理的基础上，深入学习相关优化策略，加之以实战经验，才是长久的发展之计。之后对先对关系型数据库–mysql为例进行深入学习笔记记录，毕竟开源，而且也是世界顶级的数据库，然后对非关系型数据库NoSql进行学习，以Redis为例，这些都已经接触过了，之后将做一个">
-<meta name="twitter:image" content="http://img1.51cto.com/attachment/201308/111054362.png?_=3641983">
+<meta name="twitter:title" content="邓景昌的博客">
+<meta name="twitter:description" content="武汉科技大学19级硕士">
   
   
     <link rel="icon" href="/favicon.png">
@@ -136,247 +132,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-MySQL学习笔记整理（一）" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      MySQL学习笔记整理（一）
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/ahyeah.github.io/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/ahyeah.github.io/2018/05/23/重写和重载/" class="archive-article-date">
+  	<time datetime="2018-05-23T03:12:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-23</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/ahyeah.github.io/2018/05/23/重写和重载/">重写和重载</a>
     </h1>
   
 
-        
-        <a href="/ahyeah.github.io/2017/02/13/MySQL学习笔记整理（一）/" class="archive-article-date">
-  	<time datetime="2017-02-13T03:08:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;数据库是后台开发重中之重的一个环节，了解当前各种类型的数据库，并在了解各种数据库设计原理的基础上，深入学习相关优化策略，加之以实战经验，才是长久的发展之计。之后对先对关系型数据库–mysql为例进行深入学习笔记记录，毕竟开源，而且也是世界顶级的数据库，然后对非关系型数据库NoSql进行学习，以Redis为例，这些都已经接触过了，之后将做一个总结的笔记。</p>
-  <a id="more"></a>
-<h2 id="数据库的种类"><a href="#数据库的种类" class="headerlink" title="数据库的种类"></a>数据库的种类</h2><ol>
-<li>对象数据库 应用领域：地理信息系统、科学与统计数据库、多媒体系统、XML文档仓库。</li>
-<li>对象关系数据库 了解一下</li>
-<li>关系数据库，例如mysql、oracle、sql server、db2等。我们以mysql为例深入了解关系数据库。</li>
-<li>介于关系数据库与非关系数据库之间的MongoDB和完全的非关系数据库NoSql的Redis。Redis是我们了解的重点。</li>
-</ol>
-<h2 id="mysql数据库系统"><a href="#mysql数据库系统" class="headerlink" title="mysql数据库系统"></a>mysql数据库系统</h2><p>&#160; &#160; &#160; &#160;mysql由SQL接口、解析器、查询优化器、查询缓存（缓存和缓冲区）、存储引擎等几个子系统构成。</p>
-<p><img src="http://img1.51cto.com/attachment/201308/111054362.png?_=3641983" alt=""></p>
-<p>&#160; &#160; &#160; &#160;图中还有几个部分解释如下：</p>
-<p>connectors：与其他编程语言中的sql 语句进行交互，如php、java等；</p>
-<p>Management Serveices &amp; Utilities：系统管理和控制工具；</p>
-<p>Connection Pool (连接池)：管理缓冲用户连接，线程处理等需要缓存的需求。下面我们一个一个的来了解。</p>
-<h3 id="SQL接口"><a href="#SQL接口" class="headerlink" title="SQL接口"></a>SQL接口</h3><p>&#160; &#160; &#160; &#160;SQL提供了从用户接收命令并把结果返回给用户的机制。关系数据库大都支持SQL标准，基本语句都类似，比如常规的CURD操作，sql server和mysql就差不多。mysql是一个多线程应用，它为每一个连接创建一个线程，每个线程执行都独立于其他线程。接收到SQL命令，解析各个部分存入一个类结构，查询结果通过有关数据写到网络通信协议上传输给客户端。</p>
-<h3 id="解析器"><a href="#解析器" class="headerlink" title="解析器"></a>解析器</h3><p>解析器使用Lex和YACC实现，它能够把一条SQL语句分解为命令字、选项和参数等一系列最基本的语法元素，并将这些存入一个Lex类的结构中，后面查询步骤都会使用这个。规则使用Lex和YACC编写，在使用Bison编译成一个词法解析器。</p>
-<h3 id="查询优化器"><a href="#查询优化器" class="headerlink" title="查询优化器"></a>查询优化器</h3><p>&#160; &#160; &#160; &#160;查询优化策略有很多，也可以设计优化算法，高阶程序员也可以自己写查询优化器代替mysql默认的。sql server使用的查询优化策略是基于开销的，根据一系列等价规则为给定查询生成一系列查询评估计划，然后根据关于执行这个查询所需要的关系和操作性能指标数据中选出开销最小的。mysql是混合使用多种优化技术的数据库系统，围绕着选取-投影-联结策略而设计出来的，从整体上能保证生成好的，但不能保证生成最好的查询语句。属于启发式查询优化机制。</p>
-<p>&#160; &#160; &#160; &#160;具体的 <strong>选取-投影-联结</strong> 策略 ：即先更具有关的限制条件进行选取（select操作）以减少要处理的元组个数，再进行投影以减少被选取元组里的属性字段的个数，最后根据联结条件生成最终的查询结果。</p>
-<ol>
-<li>通过计算where子句里的表达式来横向排除多余的数据。</li>
-<li>只保留在属性清单里面列出来的，以及在最后执行连接子句时还需要用到的属性字段，其他数据全部排除。</li>
-<li>根据联结条件生成最终的查询结果。</li>
-</ol>
-<p>&#160; &#160; &#160; &#160;优化的第一步检查有关的表是否存在以及用户的访问权限。发现错误返回出错信息并把控制器交给线程管理器，也就是负责监听请求的listener，一旦找到了正确的表，就打开并应用适当的并发控制。<br>&#160; &#160; &#160; &#160;所有的维护和初识化任务完成后，优化器将利用Lex结构对命令中where条件进行处理，其结果作为临时表返回后续步骤做一步处理。如果查询命令里面有UNION操作法，优化器将以循环方式执行完所有的select操作之后再进行下一步。<br>&#160; &#160; &#160; &#160;优化器下一步时执行投影操作。这一步中间结果保存在临时表中且只保存指定列。最后检查Lex结构是否含有Join条件；如果有，调用join优化方法。</p>
-<p>&#160; &#160; &#160; &#160;优化内容：对条件表达式进行简化和求值，消除死分支或恒真恒假条件。总之，在执行联结操作之前，优化器会尽量减小查询命令里的条件。</p>
-<h3 id="查询执行"><a href="#查询执行" class="headerlink" title="查询执行"></a>查询执行</h3><p>&#160; &#160; &#160; &#160;查询的具体执行是由一组库方法实现，每种方法复制一种特点操作，例如CRUD。方法都有一个线程对象参数，可以让那些方法直接找到合线程访问相关的内部查询结构，加快执行速度。</p>
-<h3 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h3><p>&#160; &#160; &#160; &#160;查询缓存，包括查询语句解析结果和查询结果本身。把频率最高的数据放在内存中能够快速的访问来加快。速度。mysql把数据封装成某个结构（不同对象缓存，用来封装的结构不同），再把数据保存为一个链表。缓存友表缓存（为了减少打开读取和关闭表，frm文件）、记录缓存（减少数据读写频率）、键缓存（缓存各索引的热度）、权限缓存（授权信息，存为先进后出的散列表）、主机名缓存（用栈）、其他类似联结缓存。缓存有自己的监控机制，利用LRU最近最少使用页面靠换策略。</p>
-<h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><p>&#160; &#160; &#160; &#160;这个是重要的一环，也是mysql最佳功能之一。数据库使用者可以根据需求选择不同的存储引擎，存储引擎是关键的一部，也是数据库管理系统最底层的一个，直接与数据库文件进行交互，也就是对数据库进行IO操作。下面介绍mysql提供的一些存储引擎。</p>
-<ol>
-<li>MyISAM 是默认的存储引擎，它在ISAM上增加了一些新的缓存和索引机制。为了提高访问速度，这类表还普遍使用了数据压缩和索引优化技术。<font color="red">此外还准备了表级的锁定机制。所以适合检索读性能。</font></li>
-<li>InnoDB 几乎总是用在需要支持事务的应用程序。支持ACID，InnoDB所有索引采用B-树结构，放在叶子节点里。改进了并发控制，提供行级的锁定。所以对频繁更新，添加，删除等类型数据库是首选存储引擎。</li>
-<li>BDB提供页面即的锁。支持散列表、B-树。</li>
-<li>内存存储引擎。HEAP表。</li>
-<li>合并存储引擎。安装特定规则分成很多小表去存储一个大表，搜索的时候可以去搜索特定的小表而不是搜索体积庞大的大表。但是缺点是：只能用相同的myisam表，不允许替换操作，与普通表相比，使用索引访问效率要低。</li>
-<li>档案。把大量数据保存为压缩格式，适合存放和检索那些不需要频繁更新的档案性或历史积累数据。比如系统日志。</li>
-<li>联合存储引擎。适合用在分布式环境</li>
-<li>群集／NDB 。 在一个高可用性和高性能的环境中使用多个mysql服务器提供数据库服务。</li>
-<li>其他的包括：CSV、黑洞、定制的。</li>
-</ol>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>&#160; &#160; &#160; &#160;了解了一下数据库的类型，和mysql的组成，对RDBS的设计有了大致的了解，那么后面将对在此基础上对mysql优化进行一个深度的学习和总结，并找demo来实战。下面对SQL 语句执行过程进行说明：</p>
-<p>   &#160; &#160; &#160; &#160;数据库通常不会被直接使用，而是由其他编程语言通过SQL语句调用mysql，由mysql处理并返回执行结果。那么Mysql接受到SQL语句后，又是如何处理的呢？</p>
-<p>   &#160; &#160; &#160; &#160;首先程序的请求会通过mysql的connectors与其进行交互，请求到处后，会暂时存放在连接池（connection pool)中并由处理器（Management Serveices&amp;Utilities）管理。当该请求从等待队列进入到处理队列，管理器会将该请求丢给SQL接口（SQL Interface）。SQL接口接收到请求后，它会将请求进行hash处理并与缓存中的结果进行对比，如果完全匹配则通过缓存直接返回处理结果；否则，需要完整的走一趟流程：</p>
-<ol>
-<li><p>由SQL接口丢给后面的解释器（Parser），上面已经说到，解释器会判断SQL语句正确与否，若正确则将其转化为数据结构。</p>
-</li>
-<li><p>解释器处理完，便来到后面的优化器（Optimizer），它会产生多种执行计划,最终数据库会选择最优化的方案去执行,尽快返会结果。</p>
-</li>
-<li><p>确定最优执行计划后，SQL语句此时便可以交由存储引擎（Engine）处理，存储引擎将会到后端的存储设备中取得相应的数据，并原路返回给程序。</p>
-</li>
-<li><p>这里有几点需要注意：</p>
-</li>
-</ol>
-<p>&#160; &#160; &#160; &#160;(1)如何缓存查询数据？</p>
-<p>&#160; &#160; &#160; &#160;存储引擎处理完数据，并将其返回给程序的同时，它还会将一份数据保留在缓存中，以便更快速的处理下一次相同的请求。具体情况是，mysql会将查询的语句、执行结果等进行hash，并保留在cache中，等待下次查询。</p>
-<p>&#160; &#160; &#160; &#160;(2)buffer与cache的区别？</p>
-<p>&#160; &#160; &#160; &#160;从上面的图可以看到，缓存那里实际上有buffer和cache两个，那它们之间是否有什么不同呢？简单的说就是，buffer是写缓存，cache是读缓存。</p>
-<p>&#160; &#160; &#160; &#160;(3)如何判断缓存中是否已缓存需要的数据</p>
-<p>&#160; &#160; &#160; &#160;这里可能有一个误区，觉得处理SQL语句的时候，为了判断是否已缓存查询结果，会将整个流程走一遍，取得执行结果后再与需要的进行对比，看看是否命中，并以此说，既然不管缓存中有没有缓存到查询内容，都要整个流程走一遍，那么缓存的优势又在哪里？？</p>
-<p>&#160; &#160; &#160; &#160;实际上，并非如此，在第一次查询后，mysql便将查询语句以及查询结果进行hash处理并保留在缓存中，SQL查询到达之后，对其进行同样的hash处理后，将两个hash值进行对照，如果一样，则命中，从缓存中返回查询结果；否则，需要整个流程走一遍。</p>
-<p>链接参考：<a href="http://pmghong.blog.51cto.com/3221425/1281970" target="_blank" rel="noopener">mysql原理</a></p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&#160; &#160; &#160; &#160;文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！！！</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">java基础、重写和重载</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/ahyeah.github.io/categories/mysql学习//" class="article-tag-list-link color3">mysql学习</a>
+        			<a href="/ahyeah.github.io/categories/java//" class="article-tag-list-link color5">java</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:git@github.com:ahyeah/ahyeah.github.io.git/2017/02/13/MySQL学习笔记整理（一）/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/ahyeah.github.io/2017/02/14/MySQL学习笔记整理（二）/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          MySQL学习笔记整理（二）
-        
-      </div>
-    </a>
   
   
-    <a href="/ahyeah.github.io/2017/02/10/Java基础之面向对象（二）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Java基础之面向对象（二）</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -399,10 +219,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/ahyeah.github.io/",

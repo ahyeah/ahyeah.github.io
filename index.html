@@ -134,6 +134,96 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-二叉树算法总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/ahyeah.github.io/2018/05/24/二叉树算法总结/">二叉树算法</a>
+    </h1>
+  
+
+        
+        <a href="/ahyeah.github.io/2018/05/24/二叉树算法总结/" class="archive-article-date">
+  	<time datetime="2018-05-24T09:00:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要讲解常用的二叉树算法</p>
+<p>1.二叉树的递归遍历</p>
+<p>2.二叉树的非递归遍历</p>
+<p>3.二叉树的层次遍历</p>
+        
+          <a class="article-more-a" href="/ahyeah.github.io/2018/05/24/二叉树算法总结/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/ahyeah.github.io/categories/算法//" class="article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/ahyeah.github.io/2018/05/24/二叉树算法总结/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-重写和重载" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -156,19 +246,10 @@
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><pre><code>重写和重载都是多态的体现，其中重写必须是发生在父类和子类之间，重载发生在一个类的多个方法之间。重载体现虚拟机方法调用的时候的静态分派，重写体现的是动态分派。
 </code></pre><hr>
-<p>重写：重写的要求是“<strong>两同两小一大</strong>”，两同就是要求子类方法和父类方法的方法名必须相同，参数列表必须相同。两小捕获的异常和<strong>返回的类型</strong>子类必须小于或者等于父类。一大是子类的修饰符必须大于或者等于父类。</p>
-<ol>
-<li><strong>其中特别需要注意的是返回类型小于或者等于父类要考虑两种情况</strong>：当返回类型是基本数据类型的时候，父类和子类必须相同。当返回类型是引用类型的时候，子类的返回类型可以是父类返回类型的子类。如下例子中，子类的method1的返回类型overson是父类method1的返回类型overloadAndOverride的子类。</li>
-</ol>
-<p>public class OverloadAndOverride {</p>
-<p>public <strong>OverloadAndOverride</strong> method1(int a,int b){<br>System.out.print(a+b);<br>return new OverloadAndOverride();<br>}<br>}</p>
-<p>class Overson extends OverloadAndOverride{</p>
-<p>public int method1(int a){<br>System.out.print(a);<br>return a;<br>}</p>
-<p>//重写<br>public <strong>Overson</strong> method1(int a,int b){<br>System.out.print(a+b);<br>return new Overson();<br>}</p>
-<p>}</p>
-<p>重载：重载是发生在一个类的不同方法之间，要求方法名相同，参数列表不一样。其余的不做要求。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&#160; &#160; &#160; &#160;文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！</p>
-
+<p>重写：重写的要求是“<strong>两同两小一大</strong>”，两同就是要求子类方法和父类方法的方法名必须相同，参数列表必须相同。两小捕获的异常和<strong>返回的类型</strong>子类必须小于或者等于父类。一大是子类的修饰符必须大于或者等于父类。<br>
+        
+          <a class="article-more-a" href="/ahyeah.github.io/2018/05/23/重写和重载/#more">more >></a>
+        
       
 
       
@@ -910,93 +991,6 @@
 
 
   
-    <article id="post-JDK源码阅读（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/ahyeah.github.io/2017/04/01/JDK源码阅读（一）/">JDK源码阅读（一）</a>
-    </h1>
-  
-
-        
-        <a href="/ahyeah.github.io/2017/04/01/JDK源码阅读（一）/" class="archive-article-date">
-  	<time datetime="2017-04-01T02:01:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&#160; &#160; &#160; &#160;看JDK的源码是非常有效的学习方法，对深入学习和理解起着关键作用，要保持阅读源码的习惯，之后我们会经常对一些重要的源码进行整理，之前已经看了集合类，今天从基本类型开始，关键是多看，每次看都有新发现，这里主要列出别人整理过的深层次理解，方便自己经常结合源码看。</p>
-        
-          <a class="article-more-a" href="/ahyeah.github.io/2017/04/01/JDK源码阅读（一）/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JDK基础类型源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/ahyeah.github.io/categories/JDK源码解析//" class="article-tag-list-link color3">JDK源码解析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/ahyeah.github.io/2017/04/01/JDK源码阅读（一）/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/ahyeah.github.io/page/2/">2</a><a class="page-number" href="/ahyeah.github.io/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/ahyeah.github.io/page/7/">7</a><a class="extend next" rel="next" href="/ahyeah.github.io/page/2/">Next &raquo;</a>
@@ -1251,6 +1245,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">并发基础知识</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>

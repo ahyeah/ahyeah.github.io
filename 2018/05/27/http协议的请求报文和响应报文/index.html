@@ -15,10 +15,13 @@
 <meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2018/05/27/http协议的请求报文和响应报文/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
 <meta property="og:description" content="前言本文主要讲解http协议的请求报文和响应报文 1.http的请求报文 2.http的响应报文">
-<meta property="og:updated_time" content="2018-05-27T13:49:24.573Z">
+<meta property="og:image" content="http://dl.iteye.com/upload/attachment/0069/3451/412b4451-2738-3ebc-b1f6-a0cc13b9697b.jpg">
+<meta property="og:image" content="http://dl.iteye.com/upload/attachment/0069/3492/bddb00b6-a3e1-3112-a4f4-4b3cb8687c70.jpg">
+<meta property="og:updated_time" content="2018-05-27T14:25:29.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="http协议请求报文和响应报文">
 <meta name="twitter:description" content="前言本文主要讲解http协议的请求报文和响应报文 1.http的请求报文 2.http的响应报文">
+<meta name="twitter:image" content="http://dl.iteye.com/upload/attachment/0069/3451/412b4451-2738-3ebc-b1f6-a0cc13b9697b.jpg">
   
   
     <link rel="icon" href="/favicon.png">
@@ -158,7 +161,61 @@
 <p>1.http的请求报文</p>
 <p>2.http的响应报文</p>
  <a id="more"></a>
-<p>##http请求报文</p>
+<p>##http请求报文<br>HTTP请求报文由3部分组成（请求行+请求头（以键值对的形式存在）+空白行+请求体）： </p>
+<p>下面是一个实际的请求报文：  <img src="http://dl.iteye.com/upload/attachment/0069/3451/412b4451-2738-3ebc-b1f6-a0cc13b9697b.jpg" alt=""></p>
+<p>①是请求方法，GET和POST是最常见的HTTP方法，除此以外还包括DELETE、HEAD、OPTIONS、PUT、TRACE。不过，当前的大多数浏览器只支持GET和POST，Spring 3.0提供了一个HiddenHttpMethodFilter，允许你通过“_method”的表单参数指定这些特殊的HTTP方法（实际上还是通过POST提交表单）。服务端配置了HiddenHttpMethodFilter后，Spring会根据_method参数指定的值模拟出相应的HTTP方法，这样，就可以使用这些HTTP方法对处理方法进行映射了。 </p>
+<p>②为请求对应的URL地址，它和报文头的Host属性组成完整的请求URL，③是协议名称及版本号。 </p>
+<p>④是HTTP的报文头，报文头包含若干个属性，格式为“属性名:属性值”，服务端据此获取客户端的信息。 </p>
+<p>⑤是<strong>报文体，这种报文体只存在于post方法中</strong>。它将一个页面表单中的组件值通过param1=value1&amp;param2=value2的键值对形式编码成一个格式化串，它承载多个请求参数的数据。</p>
+<p>不但报文体可以传递请求参数，请求URL也可以通过类似于“/chapter15/user.html? param1=value1&amp;param2=value2”的方式传递请求参数。<strong>这种请求url传值的方法只存在于get方法中。</strong></p>
+<h2 id="常见的HTTP请求报文头属性"><a href="#常见的HTTP请求报文头属性" class="headerlink" title="常见的HTTP请求报文头属性"></a>常见的HTTP请求报文头属性</h2><p><strong>Accept</strong></p>
+<p>请求报文可通过一个“Accept”报文头属性告诉服务端 客户端接受什么类型的响应。Accept属性的值可以为一个或多个MIME类型的值。 </p>
+<p>如下报文头相当于告诉服务端，俺客户端能够接受的响应类型仅为纯文本数据啊，你丫别发其它什么图片啊，视频啊过来，那样我会歇菜的~~~： </p>
+<pre><code>Accept:text/plain 
+</code></pre><p><strong>Accept-Charset</strong><br>        接收的编码方式<br><strong>Accept-Encoding</strong><br>        接收的压缩方式<br><strong>Accept-Language</strong><br>        接收的语言<br><strong>Connection</strong> 连接方式，如Keep-Alive保持长连接<br><strong>Cookie</strong></p>
+<pre><code>Cookie: $Version=1; Skin=new;jsessionid=5F4771183629C9834F8382E23BE13C4C  
+</code></pre><p>服务端是怎么知道客户端的多个请求是隶属于一个Session呢？注意到后台的那个jsessionid=5F4771183629C9834F8382E23BE13C4C木有？原来就是通过HTTP请求报文头的Cookie属性的jsessionid的值关联起来的！（当然也可以通过重写URL的方式将会话ID附带在每个URL的后面哦）。</p>
+<p><strong>Referer</strong><br>表示这个请求是从哪个URL过来的，假如你通过google搜索出一个商家的广告页面，你对这个广告页面感兴趣，鼠标一点发送一个请求报文到商家的网站，这个请求报文的Referer报文头属性值就是<a href="http://www.google.com。" target="_blank" rel="noopener">http://www.google.com。</a> </p>
+<p><strong>Cache-Control</strong> </p>
+<p>对缓存进行控制，如一个请求希望响应返回的内容在客户端要被缓存一年，或不希望被缓存就可以通过这个报文头达到目的。 </p>
+<p>如以下设置，相当于让服务端将对应请求返回的响应内容不要在客户端缓存： </p>
+<pre><code>Cache-Control: no-cache  
+</code></pre><p>##http响应报文</p>
+<p>HTTP的响应报文也由三部分组成（响应行+响应头+响应体）： </p>
+<p><img src="http://dl.iteye.com/upload/attachment/0069/3492/bddb00b6-a3e1-3112-a4f4-4b3cb8687c70.jpg" alt=""></p>
+<p>①报文协议及版本；<br>②状态码及状态描述；<br>③响应报文头，也是由多个属性组成；<br>④响应报文体，即我们真正要的“干货”。 </p>
+<p>状态码标准如下：</p>
+<p>1**    信息，服务器收到请求，需要请求者继续执行操作</p>
+<p>2**    成功，操作被成功接收并处理</p>
+<p>3**    重定向，需要进一步的操作以完成请求</p>
+<p>4**    客户端错误，请求包含语法错误或无法完成请求</p>
+<p>5**    服务器错误，服务器在处理请求的过程中发生了错误</p>
+<p>以下是几个常见的状态码： </p>
+<p>200 OK </p>
+<p>你最希望看到的，即处理成功！ </p>
+<p>303 See Other </p>
+<p>我把你redirect到其它的页面，目标的URL通过响应报文头的Location告诉你。 </p>
+<p>304 Not Modified </p>
+<p>告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧，我很忙哦，你能不能少来烦我啊！ </p>
+<p>404 Not Found </p>
+<p>你最不希望看到的，即找不到页面。如你在google上找到一个页面，点击这个链接返回404，表示这个页面已经被网站删除了，google那边的记录只是美好的回忆。 </p>
+<p>500 Internal Server Error </p>
+<p>看到这个错误，你就应该查查服务端的日志了，肯定抛出了一堆异常，别睡了，起来改BUG去吧！ </p>
+<p>##常见的HTTP响应报文头属性##<br><strong>Cache-Control</strong> </p>
+<p>响应输出到客户端后，服务端通过该报文头属告诉客户端如何控制响应内容的缓存。 </p>
+<p>下面，的设置让客户端对响应内容缓存3600秒，也即在3600秒内，如果客户再次访问该资源，直接从客户端的缓存中返回内容给客户，不要再从服务端获取（当然，这个功能是靠客户端实现的，服务端只是通过这个属性提示客户端“应该这么做”，做不做，还是决定于客户端，如果是自己宣称支持HTTP的客户端，则就应该这样实现）。 </p>
+<pre><code>Cache-Control: max-age=3600  
+</code></pre><p><strong>Set-Cookie</strong> </p>
+<p>服务端可以设置客户端的Cookie，其原理就是通过这个响应报文头属性实现的： </p>
+<pre><code>Set-Cookie: UserID=JohnDoe; Max-Age=3600; Version=1  
+</code></pre><p><strong>Location</strong> </p>
+<p>我们在JSP中让页面Redirect到一个某个A页面中，其实是让客户端再发一个请求到A页面，这个需要Redirect到的A页面的URL，其实就是通过响应报文头的Location属性告知客户端的，如下的报文头属性，将使客户端redirect到iteye的首页中： </p>
+<pre><code>Location: http://www.iteye.com  
+</code></pre><p><strong>Content-Type</strong><br>返回实体的类型</p>
+<p>Accept:text/xml；<br>Content-Type:text/html<br>即代表希望接受的数据类型是xml格式，本次请求发送的数据的数据格式是html。</p>
+<p><strong>Content-Encoding</strong> 实体主题的编码方式</p>
+<p><strong>Content-Language</strong> 实体主体的自然语言</p>
+<p><strong>Content-Type</strong> 实体主体的字节数</p>
 
       
 

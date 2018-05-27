@@ -15,7 +15,7 @@
 <meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2018/05/24/二叉树算法总结/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
 <meta property="og:description" content="前言本文主要讲解常用的二叉树算法 1.二叉树的递归遍历 2.二叉树的非递归遍历 3.二叉树的层次遍历">
-<meta property="og:updated_time" content="2018-05-24T09:20:13.344Z">
+<meta property="og:updated_time" content="2018-05-27T13:13:21.020Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树算法">
 <meta name="twitter:description" content="前言本文主要讲解常用的二叉树算法 1.二叉树的递归遍历 2.二叉树的非递归遍历 3.二叉树的层次遍历">
@@ -230,7 +230,7 @@ while(root!=null||!stack.isEmpty()) {
 }
 }
 </code></pre><ol>
-<li>二叉树的后序遍历：输出顺序是：左 -&gt;右-&gt;根.</li>
+<li>二叉树的后序遍历：输出顺序是：左 -&gt;右-&gt;根.利用两个栈，stack1入栈，然后出栈到stack2中去，stack2以根-&gt;右-&gt;左的方式入栈，最后在stack2中依次出栈得到结果。</li>
 </ol>
 <pre><code>public static void after(TreeNode root) {
 if(root==null) {
@@ -255,6 +255,34 @@ return;
         }
 
             }
+</code></pre><p>##二叉树的层次递归遍历</p>
+<p>二叉树的层次遍历使用一个队列来实现，并且 使用last指示当前层最后一个节点，nlast指示下一层最后一个节点。</p>
+<pre><code>public static void  cengTree(TreeNode root) {
+    LinkedList&lt;TreeNode&gt; linkedlist=new LinkedList();
+    TreeNode last=root;
+    TreeNode nlast=root;
+    linkedlist.offer(root);
+while(linkedlist.size()!=0) {
+    TreeNode tre=linkedlist.remove();
+    System.out.print(tre.val);
+
+    if(tre.left!=null) {
+        linkedlist.offer(tre.left);
+        nlast=tre.left;
+    }
+    if(tre.right!=null) {
+        linkedlist.offer(tre.right);
+        nlast=tre.right;
+    }
+if(tre==last) {
+
+        System.out.println(&quot;\n&quot;);
+        last=nlast;
+    }
+
+}
+
+}
 </code></pre>
       
 
@@ -369,6 +397,15 @@ return;
 
   
 <nav id="article-nav">
+  
+    <a href="/ahyeah.github.io/2018/05/24/http协议的请求报文和响应报文/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          二叉树算法
+        
+      </div>
+    </a>
   
   
     <a href="/ahyeah.github.io/2018/05/23/重写和重载/" id="article-nav-older" class="article-nav-link-wrap">
@@ -659,6 +696,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsp</a>
               </li>
             
             <div class="clearfix"></div>

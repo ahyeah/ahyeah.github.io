@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="git@github.com:ahyeah/ahyeah.github.io.git">
-  <title>手撕设计模式（一）-普通工厂 | 邓景昌的博客</title>
+  <title>http协议请求报文和响应报文 | 邓景昌的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="武汉科技大学19级硕士">
+  <meta name="description" content="前言本文主要讲解http协议的请求报文和响应报文 1.http的请求报文 2.http的响应报文">
+<meta name="keywords" content="http">
 <meta property="og:type" content="article">
-<meta property="og:title" content="手撕设计模式（一）-普通工厂">
-<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2017/09/30/手撕设计模式（一）-普通工厂/index.html">
+<meta property="og:title" content="http协议请求报文和响应报文">
+<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2018/05/27/http协议的请求报文和响应报文/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
-<meta property="og:description" content="武汉科技大学19级硕士">
-<meta property="og:updated_time" content="2017-09-30T07:46:59.366Z">
+<meta property="og:description" content="前言本文主要讲解http协议的请求报文和响应报文 1.http的请求报文 2.http的响应报文">
+<meta property="og:updated_time" content="2018-05-27T13:49:24.573Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="手撕设计模式（一）-普通工厂">
-<meta name="twitter:description" content="武汉科技大学19级硕士">
+<meta name="twitter:title" content="http协议请求报文和响应报文">
+<meta name="twitter:description" content="前言本文主要讲解http协议的请求报文和响应报文 1.http的请求报文 2.http的响应报文">
   
   
     <link rel="icon" href="/favicon.png">
@@ -133,27 +134,32 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-手撕设计模式（一）-普通工厂" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-http协议的请求报文和响应报文" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      手撕设计模式（一）-普通工厂
+      http协议请求报文和响应报文
     </h1>
   
 
         
-        <a href="/ahyeah.github.io/2017/09/30/手撕设计模式（一）-普通工厂/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:46:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
+        <a href="/ahyeah.github.io/2018/05/27/http协议的请求报文和响应报文/" class="archive-article-date">
+  	<time datetime="2018-05-27T13:48:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-27</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要讲解http协议的请求报文和响应报文</p>
+<p>1.http的请求报文</p>
+<p>2.http的响应报文</p>
+ <a id="more"></a>
+<p>##http请求报文</p>
+
       
 
       
@@ -182,7 +188,29 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">http</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/ahyeah.github.io/categories/http//" class="article-tag-list-link color5">http</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -232,7 +260,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:git@github.com:ahyeah/ahyeah.github.io.git/2017/09/30/手撕设计模式（一）-普通工厂/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http:git@github.com:ahyeah/ahyeah.github.io.git/2018/05/27/http协议的请求报文和响应报文/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -246,18 +274,9 @@
   
 <nav id="article-nav">
   
-    <a href="/ahyeah.github.io/2017/09/30/手撕设计模式（零）-概要/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          手撕设计模式（零）-概要
-        
-      </div>
-    </a>
   
-  
-    <a href="/ahyeah.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">工作流引擎及其可视化定制工具（一）</div>
+    <a href="/ahyeah.github.io/2018/05/27/九大内置对象和四大作用域/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">jsp内置对象和作用域</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -548,6 +567,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">jsp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
             
             <div class="clearfix"></div>

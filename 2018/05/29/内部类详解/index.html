@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="git@github.com:ahyeah/ahyeah.github.io.git">
-  <title>剑指offer：斐波那契数列相关的三道题 | 邓景昌的博客</title>
+  <title>内部类 | 邓景昌的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。">
-<meta name="keywords" content="算法题">
+  <meta name="description" content="前言1.非静态内部类 2.静态内部类 3.局部内部类 4.匿名类 5.Lambda表达式">
+<meta name="keywords" content="java基础、内部类">
 <meta property="og:type" content="article">
-<meta property="og:title" content="剑指offer：斐波那契数列相关的三道题">
-<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2017/01/20/算法：近期整理/index.html">
+<meta property="og:title" content="内部类">
+<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2018/05/29/内部类详解/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
-<meta property="og:description" content="前言　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。">
-<meta property="og:updated_time" content="2017-08-09T06:59:30.792Z">
+<meta property="og:description" content="前言1.非静态内部类 2.静态内部类 3.局部内部类 4.匿名类 5.Lambda表达式">
+<meta property="og:updated_time" content="2018-05-29T12:15:01.974Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="剑指offer：斐波那契数列相关的三道题">
-<meta name="twitter:description" content="前言　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。">
+<meta name="twitter:title" content="内部类">
+<meta name="twitter:description" content="前言1.非静态内部类 2.静态内部类 3.局部内部类 4.匿名类 5.Lambda表达式">
   
   
     <link rel="icon" href="/favicon.png">
@@ -134,41 +134,145 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-算法：近期整理" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-内部类详解" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      剑指offer：斐波那契数列相关的三道题
+      内部类
     </h1>
   
 
         
-        <a href="/ahyeah.github.io/2017/01/20/算法：近期整理/" class="archive-article-date">
-  	<time datetime="2017-01-20T04:53:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-20</time>
+        <a href="/ahyeah.github.io/2018/05/29/内部类详解/" class="archive-article-date">
+  	<time datetime="2018-05-29T10:50:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-29</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。</p>
-  <a id="more"></a>
-<h1 id="近期整理的四道题"><a href="#近期整理的四道题" class="headerlink" title="近期整理的四道题"></a>近期整理的四道题</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ol>
-<li>输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。</li>
-<li>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。</li>
-<li>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。</li>
-<li>输入一个链表，输出该链表中倒数第k个结点。</li>
-</ol>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ol>
-<li>第一道题，我们采用精妙的位运算，关于位运算的应用，包括乘除，在第二题用过，交换值等我们分析过，在这道题里，<font color="red">把一个整数减去1，再和原整数做与运算，会把该整数最右边一个1变成0</font>。</li>
-<li>我们采用递归求指数结果，然后在考虑奇偶，正负的问题。</li>
-<li>遍历一遍数组，求出奇偶的个数，然后在遍历一遍把奇偶值填进去。</li>
-<li>我们先使一个head往前走k-1步，然后第二个head和第一个一起走，当第一个走到链表的结尾时，第二个所在的地方就是倒数第k个。</li>
-</ol>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">public int NumberOf1(int n) &#123;</span><br><span class="line"></span><br><span class="line">        int count=0;</span><br><span class="line">        while(n!=0)&#123;</span><br><span class="line">            count++;</span><br><span class="line">            n=(n-1)&amp;n;</span><br><span class="line">        &#125;</span><br><span class="line">        return count;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">public double Power(double base, int exponent) &#123;</span><br><span class="line">        int n=Math.abs(exponent);</span><br><span class="line">        if(n==0)</span><br><span class="line">            return 1;</span><br><span class="line">        if(n==1)</span><br><span class="line">            return base;</span><br><span class="line">        double  result=Power(base,n&gt;&gt;1);</span><br><span class="line">        result*=result;</span><br><span class="line">        if((n&amp;1)==1)</span><br><span class="line">            result*=base;</span><br><span class="line">        if(exponent&lt;0)</span><br><span class="line">            result=1/result;</span><br><span class="line">        return result;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line"> public void reOrderArray(int [] array) &#123;</span><br><span class="line">        int [] result = new int[array.length];</span><br><span class="line">        int numOfOdd = 0;</span><br><span class="line">        int numOfEven = 0;</span><br><span class="line">        for(int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">            if((array[i]&amp;0x1) == 1)&#123;</span><br><span class="line">                numOfOdd++;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                numOfEven++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">         </span><br><span class="line">        int indexOfOdd = 0;</span><br><span class="line">        int indexOfEven = numOfOdd;</span><br><span class="line">        for(int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">            if((array[i]&amp;0x1) == 1)&#123;</span><br><span class="line">                result[indexOfOdd++] = array[i];</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                result[indexOfEven++] = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">            array[i] = result[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">public ListNode FindKthToTail(ListNode head,int k) &#123;</span><br><span class="line"></span><br><span class="line">        if(head==null||k&lt;=0)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode n1=head;</span><br><span class="line">        </span><br><span class="line">        ListNode n2=head;</span><br><span class="line">        for(int i=1;i&lt;k;i++)&#123;</span><br><span class="line">            if(n1.next!=null)&#123;</span><br><span class="line">                n1=n1.next;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">       while(n1.next!=null)&#123;</span><br><span class="line">           n1=n1.next;</span><br><span class="line">           n2=n2.next;</span><br><span class="line">       &#125;</span><br><span class="line">        return n2;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.非静态内部类</p>
+<p>2.静态内部类</p>
+<p>3.局部内部类</p>
+<p>4.匿名类</p>
+<p>5.Lambda表达式</p>
+<a id="more"></a>        
+<hr>
+<p>一、为什么使用内部类?</p>
+<p>使用内部类最吸引人的原因是：每个内部类都能独立地继承一个（接口的）实现，所以无论外围类是否已经继承了某个（接口的）实现，<br>对于内部类都没有影响</p>
+<p>  使用内部类最大的优点就在于它能够非常好的解决多重继承的问题,使用内部类还能够为我们带来如下特性:</p>
+<p>(1)、内部类可以用多个实例，每个实例都有自己的状态信息，并且与其他外围对象的信息相互独。</p>
+<p>(2)、在单个外围类中，可以让多个内部类以不同的方式实现同一个接口，或者继承同一个类。</p>
+<p>(3)、创建内部类对象的时刻并不依赖于外围类对象的创建。</p>
+<p>(4)、内部类并没有令人迷惑的“is-a”关系，他就是一个独立的实体。</p>
+<p>(5)、内部类提供了更好的封装，除了该外围类，其他类都不能访问。</p>
+<p><strong>注意：1.静态内部类和非静态内部类可以看作是外部类的一个成员变量，所以内部类可以直接访问外部类的成员变量（包括静态，非静态甚至是private修饰的成员变量）静态内部类不可以直接访问外部类的非静态变量，但是外部类不能直接访问内部类的成员变量，详细使用方法如下所示。</strong>  </p>
+<p><strong>2.内部类看作外部类的一个成员变量，所以其拥有成员变量一样多的修饰符（private,public,protected,private）</strong></p>
+<p><strong>3.非静态内部类不能拥有静态成员（不能定义静态成员）。因为非静态内部类是要依赖于外部类的实例,而静态变量和方法是不依赖于对象的,仅与类相关,<br>简而言之:在加载静态域时,根本没有外部类,所在在非静态内部类中不能定义静态域或方法,编译不通过;</strong></p>
+<p>二、内部类的定义和使用</p>
+<p>1.非静态内部类</p>
+<pre><code>public class Outer{
+        private int age = 99;
+        String name = &quot;Coco&quot;;
+    public class Inner{
+        String name = &quot;Jayden&quot;;
+       public void show(){
+        System.out.println(Outer.this.name);
+        System.out.println(name);
+        System.out.println(age);
+            }
+    }
+public Inner getInnerClass(){
+        return new Inner();
+}
+    public static void main(String[] args){
+            Outer o = new Outer();
+            Inner in = o.new Inner();
+           in.show();
+        }
+}
+</code></pre><p>1.1 编译上面的程序后，会发现产生了两个 .class 文件: Outer.class,Outer$Inner.class{}</p>
+<p>1.2 定义了成员内部类后，必须使用外部类对象来创建内部类对象，而不能直接去 new 一个内部类对象，<br>即：在外部类中使用内部类的时候-&gt;Inner in=new Inner()即可；在外部类以外使用则是-&gt;Outer.Inner in=new Outer().new Inner();</p>
+<p>1.3如果外部类和内部类具有相同的成员变量或方法，内部类默认访问自己的成员变量或方法，如果要访问外部类的成员变量，<br>可以使用 this 关键字,如:Outer.this.name</p>
+<p>2.静态内部类</p>
+<pre><code>public class Outer{
+        private int age = 99;
+        static String name = &quot;Coco&quot;;
+public static class Inner{
+            String name = &quot;Jayden&quot;;
+            public void show(){
+                System.out.println(Outer.name);
+               System.out.println(name);  
+            }
+}
+    public static void main(String[] args){
+    Inner i = new Inner();
+    i.show();
+        }
+}
+</code></pre><p>2.1 定义了成员内部类后，必须使用外部类对象来创建内部类对象，而不能直接去 new 一个内部类对象，<br>即：在外部类中使用内部类的时候-&gt;Inner in=new Inner()即可；在外部类以外使用则是-&gt;Outer.Inner in=new Outer.Inner();</p>
+<p>2.2静态内部类可以定义静态和非静态成员变量和方法。</p>
+<p>2.3 静态内部类不能直接访问外部类的非静态成员，但可以通过 new 外部类().成员 的方式访问 </p>
+<p>3.方法内部类：其作用域仅限于方法内，方法外部无法访问该内部类</p>
+<pre><code>  public class Outer{
+        public void Show(){
+                final int a = 25;
+                int b = 13;
+        class Inner{
+            int c = 2;
+            public void print(){
+            System.out.println(&quot;访问外部类:&quot; + a);
+            System.out.println(&quot;访问内部类:&quot; + c);
+            }
+        }
+        Inner i = new Inner();
+        i.print();
+        }
+        public static void main(String[] args){
+        Outer o = new Outer();
+        o.show();
+    }
+}
+</code></pre><p>3.1 局部内部类就像是方法里面的一个局部变量一样，是不能有 public、protected、private 以及 static 修饰符的</p>
+<p>3.2 只能访问方法中定义的 final 类型的局部变量</p>
+<p><strong>注意:在JDK8版本之中,方法内部类中调用方法中的局部变量,可以不需要修饰为 final,匿名内部类也是一样的，主要是JDK8之后增加了 Effectively final 功能(自动给你加final)</strong></p>
+<p>4.匿名类</p>
+<p>  public class Device {<br>    public static void main(String[] args) {</p>
+<pre><code>    String a[]={&quot;2&quot;,&quot;3&quot;,&quot;5&quot;,&quot;6&quot;};
+    Arrays.sort(a,new Comparator&lt;String&gt;(){
+
+        public int compare(String o1, String o2) {
+            // TODO Auto-generated method stub
+            String r1=o1+o2;
+            String r2=o2+o1;
+            return r1.compareTo(r2);
+        }
+
+      //  public int compare(String o1, String o2){return o1.compareTo(o2);}
+
+    });
+}
+</code></pre><p>}</p>
+<p>匿名类是只需要使用一次的一个类，其必须继承一个父类或者实现一个借口，但是最多只能继承一个父类，或实现一个接口。继承一个父类的时候，可以重写其中的普通方法。</p>
+<p>4.1 匿名类不能是抽象类，因为抽象类不能实例化，所以当它继承的是一个抽象父类的时候，必须重写其中的抽象方法，使其不是一个抽象类。当然，实现一个接口的时候也必须重写其中的抽象方法。</p>
+<p>4.2 匿名内部类不能定义构造方法</p>
+<p><strong>注意:在JDK8版本之中,方法内部类中调用方法中的局部变量,可以不需要修饰为 final,匿名内部类也是一样的，主要是JDK8之后增加了 Effectively final 功能(自动给你加final)</strong></p>
+<p>6.Lambda表达式</p>
+<p>Lambda表达式允许使用一种更加简洁的代码来创建只有一个抽象方法的接口实例。</p>
+<pre><code> public class Device {
+public static void main(String[] args) {
+
+Thread t1=new Thread(()-&gt;{
+System.out.print(00);
+});
+
+}
+}
+</code></pre><p>只有一个抽象方法的接口是函数式接口，可以使用上述Lambda表达式来简化代码替代匿名类的复杂写法。</p>
+<p>注意：函数式接口中可以额外定义多个抽象方法，但这些抽象方法签名必须和Object的public方法一样接口最终有确定的类实现， 而类的最终父类是Object。 因此函数式接口可以定义Object的public方法。比如说Comparator接口中有int compare()方法和equals方法，但是equals方法和object是一样的，所以可以将其看作一个函数式接口。</p>
 
       
 
@@ -203,7 +307,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">java基础、内部类</a>
         		</li>
       		
 		</ul>
@@ -215,7 +319,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/ahyeah.github.io/categories/剑指offer详解//" class="article-tag-list-link color5">剑指offer详解</a>
+        			<a href="/ahyeah.github.io/categories/java//" class="article-tag-list-link color5">java</a>
         		</li>
       		
 		</ul>
@@ -270,7 +374,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:git@github.com:ahyeah/ahyeah.github.io.git/2017/01/20/算法：近期整理/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http:git@github.com:ahyeah/ahyeah.github.io.git/2018/05/29/内部类详解/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -284,18 +388,9 @@
   
 <nav id="article-nav">
   
-    <a href="/ahyeah.github.io/2017/01/23/算法：旋转数组的最小数字/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          剑指offer：旋转数组的最小数字
-        
-      </div>
-    </a>
   
-  
-    <a href="/ahyeah.github.io/2017/01/13/算法：裴波那契数列/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">剑指offer：斐波那契数列相关的三道题</div>
+    <a href="/ahyeah.github.io/2018/05/29/tomcat和nginx/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">tomcat和nginx</div>
       <i class="icon-circle-right"></i>
     </a>
   

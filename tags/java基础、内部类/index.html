@@ -6,19 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="git@github.com:ahyeah/ahyeah.github.io.git">
-  <title>剑指offer：斐波那契数列相关的三道题 | 邓景昌的博客</title>
+  <title>Tag: java基础、内部类 | 邓景昌的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。">
-<meta name="keywords" content="算法题">
-<meta property="og:type" content="article">
-<meta property="og:title" content="剑指offer：斐波那契数列相关的三道题">
-<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2017/01/20/算法：近期整理/index.html">
+  <meta name="description" content="武汉科技大学19级硕士">
+<meta property="og:type" content="website">
+<meta property="og:title" content="邓景昌的博客">
+<meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/tags/java基础、内部类/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
-<meta property="og:description" content="前言　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。">
-<meta property="og:updated_time" content="2017-08-09T06:59:30.792Z">
+<meta property="og:description" content="武汉科技大学19级硕士">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="剑指offer：斐波那契数列相关的三道题">
-<meta name="twitter:description" content="前言　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。">
+<meta name="twitter:title" content="邓景昌的博客">
+<meta name="twitter:description" content="武汉科技大学19级硕士">
   
   
     <link rel="icon" href="/favicon.png">
@@ -134,201 +132,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-算法：近期整理" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      剑指offer：斐波那契数列相关的三道题
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/ahyeah.github.io/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/ahyeah.github.io/2018/05/29/内部类详解/" class="archive-article-date">
+  	<time datetime="2018-05-29T10:50:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-29</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/ahyeah.github.io/2018/05/29/内部类详解/">内部类</a>
     </h1>
   
 
-        
-        <a href="/ahyeah.github.io/2017/01/20/算法：近期整理/" class="archive-article-date">
-  	<time datetime="2017-01-20T04:53:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　本次是位运算、数学计算、数组操作、链表操作的四道题应用。</p>
-  <a id="more"></a>
-<h1 id="近期整理的四道题"><a href="#近期整理的四道题" class="headerlink" title="近期整理的四道题"></a>近期整理的四道题</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ol>
-<li>输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。</li>
-<li>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。</li>
-<li>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。</li>
-<li>输入一个链表，输出该链表中倒数第k个结点。</li>
-</ol>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ol>
-<li>第一道题，我们采用精妙的位运算，关于位运算的应用，包括乘除，在第二题用过，交换值等我们分析过，在这道题里，<font color="red">把一个整数减去1，再和原整数做与运算，会把该整数最右边一个1变成0</font>。</li>
-<li>我们采用递归求指数结果，然后在考虑奇偶，正负的问题。</li>
-<li>遍历一遍数组，求出奇偶的个数，然后在遍历一遍把奇偶值填进去。</li>
-<li>我们先使一个head往前走k-1步，然后第二个head和第一个一起走，当第一个走到链表的结尾时，第二个所在的地方就是倒数第k个。</li>
-</ol>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">public int NumberOf1(int n) &#123;</span><br><span class="line"></span><br><span class="line">        int count=0;</span><br><span class="line">        while(n!=0)&#123;</span><br><span class="line">            count++;</span><br><span class="line">            n=(n-1)&amp;n;</span><br><span class="line">        &#125;</span><br><span class="line">        return count;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">public double Power(double base, int exponent) &#123;</span><br><span class="line">        int n=Math.abs(exponent);</span><br><span class="line">        if(n==0)</span><br><span class="line">            return 1;</span><br><span class="line">        if(n==1)</span><br><span class="line">            return base;</span><br><span class="line">        double  result=Power(base,n&gt;&gt;1);</span><br><span class="line">        result*=result;</span><br><span class="line">        if((n&amp;1)==1)</span><br><span class="line">            result*=base;</span><br><span class="line">        if(exponent&lt;0)</span><br><span class="line">            result=1/result;</span><br><span class="line">        return result;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line"> public void reOrderArray(int [] array) &#123;</span><br><span class="line">        int [] result = new int[array.length];</span><br><span class="line">        int numOfOdd = 0;</span><br><span class="line">        int numOfEven = 0;</span><br><span class="line">        for(int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">            if((array[i]&amp;0x1) == 1)&#123;</span><br><span class="line">                numOfOdd++;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                numOfEven++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">         </span><br><span class="line">        int indexOfOdd = 0;</span><br><span class="line">        int indexOfEven = numOfOdd;</span><br><span class="line">        for(int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">            if((array[i]&amp;0x1) == 1)&#123;</span><br><span class="line">                result[indexOfOdd++] = array[i];</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                result[indexOfEven++] = array[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i=0;i&lt;array.length;i++)&#123;</span><br><span class="line">            array[i] = result[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">public ListNode FindKthToTail(ListNode head,int k) &#123;</span><br><span class="line"></span><br><span class="line">        if(head==null||k&lt;=0)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode n1=head;</span><br><span class="line">        </span><br><span class="line">        ListNode n2=head;</span><br><span class="line">        for(int i=1;i&lt;k;i++)&#123;</span><br><span class="line">            if(n1.next!=null)&#123;</span><br><span class="line">                n1=n1.next;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">       while(n1.next!=null)&#123;</span><br><span class="line">           n1=n1.next;</span><br><span class="line">           n2=n2.next;</span><br><span class="line">       &#125;</span><br><span class="line">        return n2;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">算法题</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">java基础、内部类</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/ahyeah.github.io/categories/剑指offer详解//" class="article-tag-list-link color5">剑指offer详解</a>
+        			<a href="/ahyeah.github.io/categories/java//" class="article-tag-list-link color5">java</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:git@github.com:ahyeah/ahyeah.github.io.git/2017/01/20/算法：近期整理/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/ahyeah.github.io/2017/01/23/算法：旋转数组的最小数字/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          剑指offer：旋转数组的最小数字
-        
-      </div>
-    </a>
   
   
-    <a href="/ahyeah.github.io/2017/01/13/算法：裴波那契数列/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">剑指offer：斐波那契数列相关的三道题</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -351,9 +219,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

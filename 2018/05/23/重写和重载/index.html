@@ -15,7 +15,7 @@
 <meta property="og:url" content="git@github.com:ahyeah/ahyeah.github.io.git/2018/05/23/重写和重载/index.html">
 <meta property="og:site_name" content="邓景昌的博客">
 <meta property="og:description" content="前言 重写和重载都是多态的体现，其中重写必须是发生在父类和子类之间，重载发生在一个类的多个方法之间。重载体现虚拟机方法调用的时候的静态分派，重写体现的是动态分派。 一个关于继承的例子   重写：重写的要求是“两同两小一大”，两同就是要求子类方法和父类方法的方法名必须相同，参数列表必须相同。两小捕获的异常和返回的类型子类必须小于或者等于父类。一大是子类的修饰符必须大于或者等于父类。">
-<meta property="og:updated_time" content="2018-06-05T01:47:28.766Z">
+<meta property="og:updated_time" content="2018-06-08T03:21:33.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重写和重载">
 <meta name="twitter:description" content="前言 重写和重载都是多态的体现，其中重写必须是发生在父类和子类之间，重载发生在一个类的多个方法之间。重载体现虚拟机方法调用的时候的静态分派，重写体现的是动态分派。 一个关于继承的例子   重写：重写的要求是“两同两小一大”，两同就是要求子类方法和父类方法的方法名必须相同，参数列表必须相同。两小捕获的异常和返回的类型子类必须小于或者等于父类。一大是子类的修饰符必须大于或者等于父类。">
@@ -232,6 +232,57 @@ class D extends C{
     }
 }
 </code></pre><p>以上方法调用method2的时候，又调用了method1的方法，value的输出值是1。而不是子类中的2.</p>
+<p>4.子类可以调用父类的静态变量（非private的）和静态方法，但是不可以重写父类的静态方法，因为静态方法的调用是与类相关的，与对象创建与否无关。</p>
+<pre><code>public class TestSpring extends ff {
+
+public static void main(String[] args) {
+//BeanFactory
+   // System.out.println(new Date());
+
+TestSpring.aa=9;
+ff.aa=2;
+ff.fg();
+TestSpring.fg();
+System.out.println(ff.aa);
+System.out.println(TestSpring.aa);
+
+}
+
+}
+
+class ff{
+ static int aa=6;
+ static void fg(){
+aa++;
+ }
+
+}
+</code></pre><p>如上的输出结果是4 4，都是对父类ff的静态变量操作。</p>
+<p>5.对于子类重写父类的问题，子类会创建对象，父类不会创建对象，但是会为分配父类的成员变量分配内存空间。并且子类会继承父类的一切，不过调用的时候会现在子类的对象内存中找，然后才回去父类的内存空间中找，能不能调用还要看访问权限是不是private；<strong>值得注意的是父类的方法如果是private，子类写的同名方法就不是父类方法的重写，而可以看作一个新的方法</strong></p>
+<p>（1）通过点寻找成员变量的过程是先在子类创建的对象的内存空间寻找（可能找到了但是private不能访问，这也算是找到了），如果没有找到就会去父类的成员变量内存空间找。</p>
+<pre><code>public class TestSpring   {
+
+
+public static void main(String[] args) {
+
+ffson g=new ffson();
+//此次找到的是子类中的a，但是没有权限，所以会编译错误
+g.a=6;
+//强转为父类就可以找到父类中的a
+((ff)g).a=66;
+
+}
+
+}
+
+class ff{
+public int a=1;
+}
+class ffson extends ff{
+private int a=1;
+
+}
+</code></pre><p>（2）在方法中寻找变量如上3所示。</p>
 <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>&#160; &#160; &#160; &#160;文中出现的图片，文字描述有些来自互联网，但是出处无法考究，如果侵犯您的相关权益，请联系我，核实后我会马上加上转载说明。谢谢！</p>
 
       
@@ -358,8 +409,8 @@ class D extends C{
     </a>
   
   
-    <a href="/ahyeah.github.io/2017/06/11/工作流引擎及其可视化定制工具（一）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">工作流引擎及其可视化定制工具（一）</div>
+    <a href="/ahyeah.github.io/2018/05/10/Redis笔记（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Redis学习笔记（二）</div>
       <i class="icon-circle-right"></i>
     </a>
   
